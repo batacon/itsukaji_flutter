@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:itsukaji_flutter/pages/create_task_page.dart';
+import 'package:itsukaji_flutter/pages/sign_in_page.dart';
 
 class TaskListPage extends StatefulWidget {
   const TaskListPage({Key? key}) : super(key: key);
@@ -26,6 +28,15 @@ class _TaskListPageState extends State<TaskListPage> {
             Text(
               'aaa',
               style: Theme.of(context).textTheme.headline4,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                FirebaseAuth.instance.signOut();
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => const SignInPage()),
+                );
+              },
+              child: const Text('Sign Out'),
             ),
           ],
         ),
