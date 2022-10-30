@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,7 +17,7 @@ class _TaskFormState extends State<TaskForm> {
   final _intervalDaysFormFieldKey = GlobalKey<FormFieldState<int>>();
   String _taskName = '';
   int _intervalDays = 0;
-  DateTime _lastDoneDate = DateTime.now();
+  DateTime? _lastDoneDate;
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +107,7 @@ class _TaskFormState extends State<TaskForm> {
                   const Text('前回やった日(任意)', style: TextStyle(fontSize: 16)),
                   Row(
                     children: [
-                      Text('${_lastDoneDate.year}年${_lastDoneDate.month}月${_lastDoneDate.day}日'),
+                      _buildLastDoneDate(),
                       IconButton(
                         icon: const Icon(Icons.calendar_today),
                         onPressed: () {
@@ -139,6 +141,13 @@ class _TaskFormState extends State<TaskForm> {
     );
   }
 
+  Text _buildLastDoneDate() {
+    if (_lastDoneDate == null) {
+      return const Text('なし', style: TextStyle(fontSize: 16));
+    }
+    return Text('${_lastDoneDate!.year}年${_lastDoneDate!.month}月${_lastDoneDate!.day}日');
+  }
+
   Future<dynamic> _buildDatePicker(BuildContext context) {
     return showModalBottomSheet(
       context: context,
@@ -148,7 +157,7 @@ class _TaskFormState extends State<TaskForm> {
             height: 180,
             child: CupertinoDatePicker(
               mode: CupertinoDatePickerMode.date,
-              initialDateTime: _lastDoneDate,
+              initialDateTime: DateTime.now(),
               maximumDate: DateTime.now(),
               onDateTimeChanged: (value) {
                 setState(() {
@@ -170,6 +179,14 @@ class _TaskFormState extends State<TaskForm> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('保存します')),
           );
+          final form = {
+            'taskName': _taskName,
+            'intervalDays': _intervalDays,
+            'lastDoneDate': _lastDoneDate,
+            'createdAt': DateTime.now(),
+            'userId': FirebaseAuth.instance.currentUser!.uid,
+          };
+          FirebaseFirestore.instance.collection('tasks').add(form);
           Navigator.pop(context);
         }
       },
