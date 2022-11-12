@@ -29,8 +29,7 @@ class _TaskListPageState extends State<TaskListPage> {
             if (snapshot.hasData) {
               return ListView(
                 shrinkWrap: true,
-                // TODO: daysUntilNext() でソートする
-                children: snapshot.data!.docs.map((QueryDocumentSnapshot document) {
+                children: _sortTasksByDaysUntilNext(snapshot.data!.docs).map((QueryDocumentSnapshot document) {
                   final documentData = document as QueryDocumentSnapshot<Map<String, dynamic>>;
                   final task = Task.fromFirestore(documentData, null);
                   return TaskCard(task: task);
@@ -52,6 +51,15 @@ class _TaskListPageState extends State<TaskListPage> {
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  List<QueryDocumentSnapshot<Object?>> _sortTasksByDaysUntilNext(List<QueryDocumentSnapshot<Object?>> documents) {
+    documents.sort((a, b) {
+      final aTask = Task.fromFirestore(a as QueryDocumentSnapshot<Map<String, dynamic>>, null);
+      final bTask = Task.fromFirestore(b as QueryDocumentSnapshot<Map<String, dynamic>>, null);
+      return aTask.daysUntilNext().compareTo(bTask.daysUntilNext());
+    });
+    return documents;
   }
 }
 
