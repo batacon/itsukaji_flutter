@@ -29,14 +29,11 @@ class _TaskListPageState extends State<TaskListPage> {
             if (snapshot.hasData) {
               return ListView(
                 shrinkWrap: true,
+                // TODO: daysUntilNext() でソートする
                 children: snapshot.data!.docs.map((QueryDocumentSnapshot document) {
                   final documentData = document as QueryDocumentSnapshot<Map<String, dynamic>>;
                   final task = Task.fromFirestore(documentData, null);
                   return TaskCard(task: task);
-                  // return ListTile(
-                  //   title: Text(document['name']),
-                  //   subtitle: Text(document['intervalDays'].toString()),
-                  // );
                 }).toList(),
               );
             } else {
