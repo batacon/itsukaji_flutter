@@ -12,49 +12,61 @@ class TaskCard extends StatelessWidget {
     return Card(
       color: const Color(0xFFFDF5F9),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'every ${task.intervalDays} days',
-              style: const TextStyle(
-                fontSize: 12,
-                decoration: TextDecoration.underline,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              task.name,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Row(
-              children: [
-                const SizedBox(width: 16),
-                SvgPicture.asset(
-                  'assets/icons/icon_bell_ring.svg',
-                  width: 16,
-                  height: 16,
-                ),
-                const SizedBox(width: 4),
-                Text('あと${task.daysUntilNext()} 日', style: const TextStyle(fontSize: 14)),
-                const SizedBox(width: 8),
-                SvgPicture.asset(
-                  'assets/icons/icon_calendar_check.svg',
-                  width: 16,
-                  height: 16,
-                ),
-                const SizedBox(width: 4),
-                Text('前回 ${task.lastDoneDateFormatted()}', style: const TextStyle(fontSize: 14)),
-              ],
-            )
+            _buildCardHeader(task.intervalDays),
+            const SizedBox(height: 8),
+            _buildTaskName(task.name),
+            const SizedBox(height: 8),
+            _buildCardFooter(daysUntilNext: task.daysUntilNext(), lastDoneDate: task.lastDoneDateFormatted()),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildCardHeader(int intervalDays) {
+    return Text(
+      'every $intervalDays days',
+      style: const TextStyle(
+        fontSize: 12,
+        decoration: TextDecoration.underline,
+      ),
+    );
+  }
+
+  Widget _buildTaskName(String name) {
+    return Text(
+      name,
+      style: const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w700,
+      ),
+    );
+  }
+
+  Row _buildCardFooter({required int daysUntilNext, required String lastDoneDate}) {
+    return Row(
+      children: [
+        const SizedBox(width: 16),
+        _buildIcon('icon_bell_ring'),
+        const SizedBox(width: 4),
+        Text('あと$daysUntilNext 日', style: const TextStyle(fontSize: 14)),
+        const SizedBox(width: 16),
+        _buildIcon('icon_calendar_check'),
+        const SizedBox(width: 4),
+        Text('前回 $lastDoneDate', style: const TextStyle(fontSize: 14)),
+      ],
+    );
+  }
+
+  Widget _buildIcon(String iconName) {
+    return SvgPicture.asset(
+      'assets/icons/$iconName.svg',
+      width: 16,
+      height: 16,
     );
   }
 }
