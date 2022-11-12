@@ -11,8 +11,6 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  final _auth = FirebaseAuth.instance;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +21,7 @@ class _SignInPageState extends State<SignInPage> {
         child: ElevatedButton(
           onPressed: () async {
             try {
-              final userCredential = await signInWithGoogle();
+              await signInWithGoogle();
               if (!mounted) return;
 
               Navigator.of(context).pushReplacement(
