@@ -51,7 +51,7 @@ class Task {
   int daysUntilNext() {
     final nextDate = lastDoneDate.add(Duration(days: intervalDays));
     final now = DateTime.now();
-    return nextDate.difference(now).inDays;
+    return nextDate.difference(now).inDays + 1;
   }
 
   String lastDoneDateFormatted() {

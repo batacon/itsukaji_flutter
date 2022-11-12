@@ -10,21 +10,52 @@ class TaskCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: const Color(0xFFFDF5F9),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildCardHeader(task.intervalDays),
-            const SizedBox(height: 8),
-            _buildTaskName(task.name),
-            const SizedBox(height: 8),
-            _buildCardFooter(daysUntilNext: task.daysUntilNext(), lastDoneDate: task.lastDoneDateFormatted()),
-          ],
-        ),
+      elevation: 2,
+      color: _cardColor(task.daysUntilNext()),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildCardHeader(task.intervalDays),
+                const SizedBox(height: 8),
+                _buildTaskName(task.name),
+                const SizedBox(height: 8),
+                _buildCardFooter(daysUntilNext: task.daysUntilNext(), lastDoneDate: task.lastDoneDateFormatted()),
+              ],
+            ),
+          ),
+          Container(
+            width: 24,
+            height: 92,
+            color: _cardEdgeColor(task.daysUntilNext()),
+          )
+        ],
       ),
     );
+  }
+
+  Color _cardColor(int daysUntilNext) {
+    if (daysUntilNext <= 0) {
+      return const Color(0xFFFDF5F9);
+    } else if (daysUntilNext == 1) {
+      return const Color(0xFFFFFEF1);
+    } else {
+      return const Color(0xFFF3F9FD);
+    }
+  }
+
+  Color _cardEdgeColor(int daysUntilNext) {
+    if (daysUntilNext <= 0) {
+      return const Color(0xFFF5BECF);
+    } else if (daysUntilNext == 1) {
+      return const Color(0xFFFFF7A0);
+    } else {
+      return const Color(0xFFBBE2F1);
+    }
   }
 
   Widget _buildCardHeader(int intervalDays) {
