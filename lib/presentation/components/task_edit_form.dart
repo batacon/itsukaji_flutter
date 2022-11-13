@@ -41,9 +41,9 @@ class _TaskEditFormState extends State<TaskEditForm> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // TODO: 編集時の削除ボタンを作成
+                _buildRemoveButton(context),
                 _buildSubmitButton(context),
               ],
             ),
@@ -178,6 +178,45 @@ class _TaskEditFormState extends State<TaskEditForm> {
             ),
           ),
         );
+      },
+    );
+  }
+
+  Widget _buildRemoveButton(final BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.delete, color: Colors.grey, size: 32),
+      onPressed: () {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('本当に消しますか？'),
+                content: Text('削除すると取り消しできません。$_taskNameを本当に消しますか？'),
+                actions: [
+                  ElevatedButton(
+                    child: const Text('やめとく'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  ElevatedButton(
+                    child: const Text('本当に消す'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      _taskRepository.removeTask(widget.task.id).then((value) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            duration: const Duration(milliseconds: 1500),
+                            content: Text('$_taskNameを削除中...'),
+                          ),
+                        );
+                        Navigator.of(context).pop();
+                      });
+                    },
+                  ),
+                ],
+              );
+            });
       },
     );
   }
