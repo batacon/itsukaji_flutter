@@ -2,35 +2,43 @@ import 'package:flutter/material.dart';
 import 'package:itsukaji_flutter/components/task_card_content.dart';
 import 'package:itsukaji_flutter/components/task_card_edge.dart';
 import 'package:itsukaji_flutter/models/task.dart';
+import 'package:itsukaji_flutter/pages/edit_task_page.dart';
 import 'package:itsukaji_flutter/repositories/tasks_repository.dart';
 
 class TaskCard extends StatelessWidget {
-  const TaskCard({Key? key, required this.task}) : super(key: key);
+  const TaskCard({required this.task, Key? key}) : super(key: key);
 
   final Task task;
 
   @override
   Widget build(BuildContext context) {
-    return Dismissible(
-      key: UniqueKey(),
-      onDismissed: (direction) {
-        TaskRepository().setTaskDone(task).then(
-              (value) => ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Good Job!'),
-                ),
-              ),
-            );
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          return EditTaskPage(task: task);
+        }));
       },
-      child: Card(
-        elevation: 2,
-        color: _cardColor(task),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            TaskCardContent(task: task),
-            TaskCardEdge(task: task),
-          ],
+      child: Dismissible(
+        key: UniqueKey(),
+        onDismissed: (direction) {
+          TaskRepository().setTaskDone(task).then(
+                (value) => ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Good Job!'),
+                  ),
+                ),
+              );
+        },
+        child: Card(
+          elevation: 2,
+          color: _cardColor(task),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TaskCardContent(task: task),
+              TaskCardEdge(task: task),
+            ],
+          ),
         ),
       ),
     );

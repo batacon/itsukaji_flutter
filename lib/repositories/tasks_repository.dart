@@ -16,6 +16,10 @@ class TaskRepository {
     await db.collection("tasks").doc(task.id).update({"lastDoneDate": DateTime.now()});
   }
 
+  Future updateTask(Task task) async {
+    await db.collection("tasks").doc(task.id).update(task.toJson());
+  }
+
   // void removeTask(Task task) {
   //   _tasks.remove(task);
   // }

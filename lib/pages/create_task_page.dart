@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:itsukaji_flutter/components/task_form.dart';
+import 'package:itsukaji_flutter/components/task_create_form.dart';
 
 class CreateTaskPage extends StatelessWidget {
   const CreateTaskPage({Key? key}) : super(key: key);
@@ -13,7 +13,7 @@ class CreateTaskPage extends StatelessWidget {
       ),
       body: Column(
         children: const [
-          TaskForm(),
+          TaskCreateForm(),
         ],
       ),
     );
