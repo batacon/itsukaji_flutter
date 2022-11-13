@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:itsukaji_flutter/firebase_firestore.dart';
+import 'package:itsukaji_flutter/repositories/tasks_repository.dart';
 
 class TaskForm extends StatefulWidget {
   const TaskForm({Key? key}) : super(key: key);
@@ -12,6 +12,7 @@ class TaskForm extends StatefulWidget {
 }
 
 class _TaskFormState extends State<TaskForm> {
+  final _taskRepository = TaskRepository();
   final _formKey = GlobalKey<FormState>();
   final _taskNameFormFieldKey = GlobalKey<FormFieldState<String>>();
   final _intervalDaysFormFieldKey = GlobalKey<FormFieldState<int>>();
@@ -186,8 +187,9 @@ class _TaskFormState extends State<TaskForm> {
             'createdAt': DateTime.now(),
             'userId': FirebaseAuth.instance.currentUser!.uid,
           };
-          db.collection('tasks').add(form);
-          Navigator.pop(context);
+          _taskRepository.addTask(form).then((value) {
+            Navigator.of(context).pop();
+          });
         }
       },
     );

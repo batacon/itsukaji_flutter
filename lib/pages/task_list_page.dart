@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:itsukaji_flutter/components/task_card.dart';
-import 'package:itsukaji_flutter/firebase_firestore.dart';
 import 'package:itsukaji_flutter/models/task.dart';
 import 'package:itsukaji_flutter/pages/create_task_page.dart';
+import 'package:itsukaji_flutter/repositories/tasks_repository.dart';
 
 class TaskListPage extends StatefulWidget {
   const TaskListPage({Key? key}) : super(key: key);
@@ -13,6 +13,8 @@ class TaskListPage extends StatefulWidget {
 }
 
 class _TaskListPageState extends State<TaskListPage> {
+  final _taskRepository = TaskRepository();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +40,7 @@ class _TaskListPageState extends State<TaskListPage> {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: StreamBuilder<QuerySnapshot>(
-        stream: db.collection('tasks').snapshots(),
+        stream: _taskRepository.getTasks(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasData) {
             return ListView(
