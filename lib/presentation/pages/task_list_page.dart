@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:itsukaji_flutter/components/task_card.dart';
 import 'package:itsukaji_flutter/models/task.dart';
-import 'package:itsukaji_flutter/pages/create_task_page.dart';
+import 'package:itsukaji_flutter/presentation/components/task_card.dart';
+import 'package:itsukaji_flutter/presentation/pages/create_task_page.dart';
 import 'package:itsukaji_flutter/repositories/tasks_repository.dart';
 
 class TaskListPage extends StatefulWidget {

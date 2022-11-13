@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:itsukaji_flutter/components/task_edit_form.dart';
 import 'package:itsukaji_flutter/models/task.dart';
+import 'package:itsukaji_flutter/presentation/components/task_edit_form.dart';
 
 class EditTaskPage extends StatelessWidget {
   const EditTaskPage({required this.task, Key? key}) : super(key: key);
