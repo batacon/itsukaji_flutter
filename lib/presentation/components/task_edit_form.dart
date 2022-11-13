@@ -189,6 +189,7 @@ class _TaskEditFormState extends State<TaskEditForm> {
         showDialog(
             context: context,
             builder: (context) {
+              // TODO: ダイアログのデザインを整える
               return AlertDialog(
                 title: const Text('本当に消しますか？'),
                 content: Text('削除すると取り消しできません。$_taskNameを本当に消しますか？'),
