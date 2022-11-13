@@ -20,6 +20,7 @@ class TaskCard extends StatelessWidget {
       },
       child: Dismissible(
         key: UniqueKey(),
+        direction: DismissDirection.endToStart,
         onDismissed: (direction) {
           TaskRepository().setTaskDone(task).then(
                 (value) => ScaffoldMessenger.of(context).showSnackBar(
