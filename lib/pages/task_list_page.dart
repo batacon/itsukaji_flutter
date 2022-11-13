@@ -50,7 +50,10 @@ class _TaskListPageState extends State<TaskListPage> {
                 ..._sortTasksByDaysUntilNext(snapshot.data!.docs).map((QueryDocumentSnapshot document) {
                   final documentData = document as QueryDocumentSnapshot<Map<String, dynamic>>;
                   final task = Task.fromFirestore(documentData, null);
-                  return TaskCard(task: task);
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 4.0),
+                    child: TaskCard(task: task),
+                  );
                 }).toList(),
                 const SizedBox(height: 52),
               ],
