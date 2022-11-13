@@ -8,19 +8,19 @@ class TaskRepository {
     return db.collection("tasks").where("userId", isEqualTo: FirebaseAuth.instance.currentUser!.uid).snapshots();
   }
 
-  Future addTask(Map<String, dynamic> taskForm) async {
+  Future<void> addTask(Map<String, dynamic> taskForm) async {
     await db.collection("tasks").add(taskForm);
   }
 
-  Future setTaskDone(Task task) async {
+  Future<void> setTaskDone(Task task) async {
     await db.collection("tasks").doc(task.id).update({"lastDoneDate": DateTime.now()});
   }
 
-  Future updateTask(Task task) async {
+  Future<void> updateTask(Task task) async {
     await db.collection("tasks").doc(task.id).update(task.toJson());
   }
 
-  // void removeTask(Task task) {
-  //   _tasks.remove(task);
-  // }
+  Future<void> removeTask(String taskId) async {
+    await db.collection("tasks").doc(taskId).delete();
+  }
 }
