@@ -12,6 +12,7 @@ class TaskCreateForm extends StatefulWidget {
   State<TaskCreateForm> createState() => _TaskCreateFormState();
 }
 
+// TODO: createとeditでフォームを使い回す。viewmodelを用意し、riverpodを利用してformの状態を管理する。
 class _TaskCreateFormState extends State<TaskCreateForm> {
   final _taskRepository = TaskRepository();
   final _formKey = GlobalKey<FormState>();

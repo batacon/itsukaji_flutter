@@ -20,6 +20,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       title: 'itsukaji',
       theme: ThemeData(
+        // TODO: オリジナルのカラーパレットを使う
         primarySwatch: Colors.blue,
       ),
       home: StreamBuilder(

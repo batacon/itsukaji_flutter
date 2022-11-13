@@ -22,6 +22,7 @@ class _TaskListPageState extends State<TaskListPage> {
         title: const Text('itsukaji'),
         centerTitle: true,
         elevation: 0,
+        // TODO: ハンバーガーメニューを追加する
       ),
       body: _buildTaskList(),
       floatingActionButton: FloatingActionButton(

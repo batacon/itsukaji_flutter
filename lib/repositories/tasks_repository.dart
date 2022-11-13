@@ -5,6 +5,8 @@ import 'package:itsukaji_flutter/models/task.dart';
 
 class TaskRepository {
   Stream<QuerySnapshot<Map<String, dynamic>>> getTasks() {
+    // TODO: 連携ユーザーのタスクも取得する
+    // TODO: グループに紐付ける。トーク画面のような実装を参考にする
     return db.collection("tasks").where("userId", isEqualTo: FirebaseAuth.instance.currentUser!.uid).snapshots();
   }
 
