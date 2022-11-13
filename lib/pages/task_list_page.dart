@@ -38,18 +38,22 @@ class _TaskListPageState extends State<TaskListPage> {
 
   Padding _buildTaskList() {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: StreamBuilder<QuerySnapshot>(
         stream: _taskRepository.getTasks(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasData) {
             return ListView(
               shrinkWrap: true,
-              children: _sortTasksByDaysUntilNext(snapshot.data!.docs).map((QueryDocumentSnapshot document) {
-                final documentData = document as QueryDocumentSnapshot<Map<String, dynamic>>;
-                final task = Task.fromFirestore(documentData, null);
-                return TaskCard(task: task);
-              }).toList(),
+              children: [
+                const SizedBox(height: 16),
+                ..._sortTasksByDaysUntilNext(snapshot.data!.docs).map((QueryDocumentSnapshot document) {
+                  final documentData = document as QueryDocumentSnapshot<Map<String, dynamic>>;
+                  final task = Task.fromFirestore(documentData, null);
+                  return TaskCard(task: task);
+                }).toList(),
+                const SizedBox(height: 52),
+              ],
             );
           } else {
             return Container();
