@@ -1,28 +1,36 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:itsukaji_flutter/common/firebase_firestore.dart';
+import 'package:itsukaji_flutter/models/member.dart';
 import 'package:itsukaji_flutter/models/task.dart';
+import 'package:itsukaji_flutter/repositories/members_repository.dart';
 
-class TaskRepository {
-  Stream<QuerySnapshot<Map<String, dynamic>>> getTasks() {
-    // TODO: 連携ユーザーのタスクも取得する
-    // TODO: グループに紐付ける。トーク画面のような実装を参考にする
-    return db.collection("tasks").where("userId", isEqualTo: FirebaseAuth.instance.currentUser!.uid).snapshots();
+class TasksRepository {
+  Stream<QuerySnapshot<Map<String, dynamic>>> getTasks(Member currentMember) {
+    return db.collection('groups').doc(currentMember.groupId).collection("tasks").snapshots();
   }
 
   Future<void> addTask(Map<String, dynamic> taskForm) async {
-    await db.collection("tasks").add(taskForm);
+    final currentMember = await MembersRepository().getCurrentMember();
+    await db.collection('groups').doc(currentMember.groupId).collection("tasks").add(taskForm);
   }
 
   Future<void> setTaskDone(Task task) async {
-    await db.collection("tasks").doc(task.id).update({"lastDoneDate": DateTime.now()});
+    final currentMember = await MembersRepository().getCurrentMember();
+    await db
+        .collection('groups')
+        .doc(currentMember.groupId)
+        .collection("tasks")
+        .doc(task.id)
+        .update({"lastDoneDate": DateTime.now()});
   }
 
   Future<void> updateTask(Task task) async {
-    await db.collection("tasks").doc(task.id).update(task.toJson());
+    final currentMember = await MembersRepository().getCurrentMember();
+    await db.collection('groups').doc(currentMember.groupId).collection("tasks").doc(task.id).update(task.toJson());
   }
 
   Future<void> removeTask(String taskId) async {
-    await db.collection("tasks").doc(taskId).delete();
+    final currentMember = await MembersRepository().getCurrentMember();
+    await db.collection('groups').doc(currentMember.groupId).collection("tasks").doc(taskId).delete();
   }
 }

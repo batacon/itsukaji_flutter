@@ -15,7 +15,7 @@ class TaskEditForm extends StatefulWidget {
 }
 
 class _TaskEditFormState extends State<TaskEditForm> {
-  final _taskRepository = TaskRepository();
+  final _tasksRepository = TasksRepository();
   final _formKey = GlobalKey<FormState>();
   final _taskNameFormFieldKey = GlobalKey<FormFieldState<String>>();
   final _intervalDaysFormFieldKey = GlobalKey<FormFieldState<int>>();
@@ -204,7 +204,7 @@ class _TaskEditFormState extends State<TaskEditForm> {
                     child: const Text('本当に消す'),
                     onPressed: () {
                       Navigator.of(context).pop();
-                      _taskRepository.removeTask(widget.task.id).then((value) {
+                      _tasksRepository.removeTask(widget.task.id).then((value) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             duration: const Duration(milliseconds: 1500),
@@ -240,7 +240,7 @@ class _TaskEditFormState extends State<TaskEditForm> {
             lastDoneDate: _lastDoneDate,
             createdAt: DateTime.now(),
           );
-          _taskRepository.updateTask(task).then((value) {
+          _tasksRepository.updateTask(task).then((value) {
             Navigator.of(context).pop();
           });
         }

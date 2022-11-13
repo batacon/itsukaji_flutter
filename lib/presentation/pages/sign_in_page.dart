@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:itsukaji_flutter/common/firebase_firestore.dart';
 import 'package:itsukaji_flutter/presentation/pages/task_list_page.dart';
 
 class SignInPage extends StatefulWidget {
@@ -21,7 +22,21 @@ class _SignInPageState extends State<SignInPage> {
         child: ElevatedButton(
           onPressed: () async {
             try {
-              await signInWithGoogle();
+              final firebaseUser = (await signInWithGoogle()).user!;
+
+              final result = await db.collection('users').where('id', isEqualTo: firebaseUser.uid).get();
+              final userDocuments = result.docs;
+              if (userDocuments.isEmpty) {
+                final newGroup = await db.collection('groups').add({
+                  'users': [firebaseUser.uid],
+                });
+
+                db.collection('users').add({
+                  'id': firebaseUser.uid,
+                  'name': firebaseUser.displayName,
+                  'group_id': newGroup.id,
+                });
+              }
               if (!mounted) return;
 
               Navigator.of(context).pushReplacement(
@@ -47,17 +62,12 @@ class _SignInPageState extends State<SignInPage> {
   }
 }
 
-// Googleを使ってサインイン
 Future<UserCredential> signInWithGoogle() async {
-  // 認証フローのトリガー
   final googleUser = await GoogleSignIn(scopes: ['email']).signIn();
-  // リクエストから、認証情報を取得
   final googleAuth = await googleUser!.authentication;
-  // クレデンシャルを新しく作成
   final credential = GoogleAuthProvider.credential(
     accessToken: googleAuth.accessToken,
     idToken: googleAuth.idToken,
   );
-  // サインインしたら、UserCredentialを返す
   return FirebaseAuth.instance.signInWithCredential(credential);
 }
