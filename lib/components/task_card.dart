@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:itsukaji_flutter/components/task_card_content.dart';
 import 'package:itsukaji_flutter/components/task_card_edge.dart';
 import 'package:itsukaji_flutter/models/task.dart';
+import 'package:itsukaji_flutter/repositories/tasks_repository.dart';
 
 class TaskCard extends StatelessWidget {
   const TaskCard({Key? key, required this.task}) : super(key: key);
@@ -10,15 +11,27 @@ class TaskCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      color: _cardColor(task),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          TaskCardContent(task: task),
-          TaskCardEdge(task: task),
-        ],
+    return Dismissible(
+      key: UniqueKey(),
+      onDismissed: (direction) {
+        TaskRepository().setTaskDone(task).then(
+              (value) => ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Good Job!'),
+                ),
+              ),
+            );
+      },
+      child: Card(
+        elevation: 2,
+        color: _cardColor(task),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TaskCardContent(task: task),
+            TaskCardEdge(task: task),
+          ],
+        ),
       ),
     );
   }
