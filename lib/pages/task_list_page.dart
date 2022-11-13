@@ -21,26 +21,7 @@ class _TaskListPageState extends State<TaskListPage> {
         centerTitle: true,
         elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: StreamBuilder<QuerySnapshot>(
-          stream: db.collection('tasks').snapshots(),
-          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.hasData) {
-              return ListView(
-                shrinkWrap: true,
-                children: _sortTasksByDaysUntilNext(snapshot.data!.docs).map((QueryDocumentSnapshot document) {
-                  final documentData = document as QueryDocumentSnapshot<Map<String, dynamic>>;
-                  final task = Task.fromFirestore(documentData, null);
-                  return TaskCard(task: task);
-                }).toList(),
-              );
-            } else {
-              return Container();
-            }
-          },
-        ),
-      ),
+      body: _buildTaskList(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(builder: (context) {
@@ -49,6 +30,29 @@ class _TaskListPageState extends State<TaskListPage> {
         },
         tooltip: 'Create New Task',
         child: const Icon(Icons.add),
+      ),
+    );
+  }
+
+  Padding _buildTaskList() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: StreamBuilder<QuerySnapshot>(
+        stream: db.collection('tasks').snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasData) {
+            return ListView(
+              shrinkWrap: true,
+              children: _sortTasksByDaysUntilNext(snapshot.data!.docs).map((QueryDocumentSnapshot document) {
+                final documentData = document as QueryDocumentSnapshot<Map<String, dynamic>>;
+                final task = Task.fromFirestore(documentData, null);
+                return TaskCard(task: task);
+              }).toList(),
+            );
+          } else {
+            return Container();
+          }
+        },
       ),
     );
   }

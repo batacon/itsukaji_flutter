@@ -57,4 +57,12 @@ class Task {
   String lastDoneDateFormatted() {
     return dateFormat.format(lastDoneDate);
   }
+
+  bool isDueToday() {
+    return daysUntilNext() <= 0;
+  }
+
+  bool isDueTomorrow() {
+    return daysUntilNext() == 1;
+  }
 }
