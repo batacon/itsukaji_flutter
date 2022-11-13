@@ -26,7 +26,6 @@ class Task {
 
   factory Task.fromFirestore(
     QueryDocumentSnapshot<Map<String, dynamic>> snapshot,
-    SnapshotOptions? options,
   ) {
     final data = snapshot.data();
     return Task(

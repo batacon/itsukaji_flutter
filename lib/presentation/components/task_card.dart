@@ -23,7 +23,7 @@ class TaskCard extends StatelessWidget {
         key: UniqueKey(),
         direction: DismissDirection.endToStart,
         onDismissed: (direction) {
-          TaskRepository().setTaskDone(task).then(
+          TasksRepository().setTaskDone(task).then(
                 (value) => ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Good Job!'),

@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,7 +13,7 @@ class TaskCreateForm extends StatefulWidget {
 
 // TODO: createとeditでフォームを使い回す。viewmodelを用意し、riverpodを利用してformの状態を管理する。
 class _TaskCreateFormState extends State<TaskCreateForm> {
-  final _taskRepository = TaskRepository();
+  final _tasksRepository = TasksRepository();
   final _formKey = GlobalKey<FormState>();
   final _taskNameFormFieldKey = GlobalKey<FormFieldState<String>>();
   final _intervalDaysFormFieldKey = GlobalKey<FormFieldState<int>>();
@@ -186,9 +185,8 @@ class _TaskCreateFormState extends State<TaskCreateForm> {
             'intervalDays': _intervalDays,
             'lastDoneDate': _lastDoneDate,
             'createdAt': DateTime.now(),
-            'userId': FirebaseAuth.instance.currentUser!.uid,
           };
-          _taskRepository.addTask(form).then((value) {
+          _tasksRepository.addTask(form).then((value) {
             Navigator.of(context).pop();
           });
         }
