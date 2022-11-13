@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart';
-
-DateFormat dateFormat = DateFormat('yyyy/MM/dd');
+import 'package:itsukaji_flutter/common/date_format.dart';
 
 class Task {
   Task({
@@ -44,8 +42,8 @@ class Task {
         "id": id,
         "name": name,
         "intervalDays": intervalDays,
-        "lastDoneDate": lastDoneDate.toIso8601String(),
-        "createdAt": createdAt.toIso8601String(),
+        "lastDoneDate": lastDoneDate,
+        "createdAt": createdAt,
       };
 
   int daysUntilNext() {
@@ -55,7 +53,7 @@ class Task {
   }
 
   String lastDoneDateFormatted() {
-    return dateFormat.format(lastDoneDate);
+    return dateFormatSlashString(lastDoneDate);
   }
 
   bool isDueToday() {

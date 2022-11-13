@@ -1,24 +1,35 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:itsukaji_flutter/common/date_format.dart';
+import 'package:itsukaji_flutter/models/task.dart';
 import 'package:itsukaji_flutter/repositories/tasks_repository.dart';
 
-class TaskForm extends StatefulWidget {
-  const TaskForm({Key? key}) : super(key: key);
+class TaskEditForm extends StatefulWidget {
+  const TaskEditForm({required this.task, Key? key}) : super(key: key);
+
+  final Task task;
 
   @override
-  State<TaskForm> createState() => _TaskFormState();
+  State<TaskEditForm> createState() => _TaskEditFormState();
 }
 
-class _TaskFormState extends State<TaskForm> {
+class _TaskEditFormState extends State<TaskEditForm> {
   final _taskRepository = TaskRepository();
   final _formKey = GlobalKey<FormState>();
   final _taskNameFormFieldKey = GlobalKey<FormFieldState<String>>();
   final _intervalDaysFormFieldKey = GlobalKey<FormFieldState<int>>();
-  String _taskName = '';
-  int _intervalDays = 0;
-  DateTime? _lastDoneDate;
+  late String _taskName;
+  late int _intervalDays;
+  late DateTime _lastDoneDate;
+
+  @override
+  void initState() {
+    super.initState();
+    _taskName = widget.task.name;
+    _intervalDays = widget.task.intervalDays;
+    _lastDoneDate = widget.task.lastDoneDate;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +49,7 @@ class _TaskFormState extends State<TaskForm> {
             ),
             TextFormField(
               key: _taskNameFormFieldKey,
+              initialValue: _taskName,
               decoration: const InputDecoration(
                 hintText: '新しいタスク名を入力（20文字まで）',
               ),
@@ -69,6 +81,7 @@ class _TaskFormState extends State<TaskForm> {
                         width: 150.0,
                         child: TextFormField(
                           key: _intervalDaysFormFieldKey,
+                          initialValue: _intervalDays.toString(),
                           decoration: const InputDecoration(
                             hintText: '1~999',
                           ),
@@ -143,10 +156,7 @@ class _TaskFormState extends State<TaskForm> {
   }
 
   Text _buildLastDoneDate() {
-    if (_lastDoneDate == null) {
-      return const Text('なし', style: TextStyle(fontSize: 16));
-    }
-    return Text('${_lastDoneDate!.year}年${_lastDoneDate!.month}月${_lastDoneDate!.day}日');
+    return Text(dateFormatJpString(_lastDoneDate));
   }
 
   Future<dynamic> _buildDatePicker(BuildContext context) {
@@ -158,7 +168,7 @@ class _TaskFormState extends State<TaskForm> {
             height: 180,
             child: CupertinoDatePicker(
               mode: CupertinoDatePickerMode.date,
-              initialDateTime: DateTime.now(),
+              initialDateTime: _lastDoneDate,
               maximumDate: DateTime.now(),
               onDateTimeChanged: (value) {
                 setState(() {
@@ -178,16 +188,19 @@ class _TaskFormState extends State<TaskForm> {
       onPressed: () {
         if (_formKey.currentState!.validate()) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('保存中...')),
+            const SnackBar(
+              duration: Duration(milliseconds: 1500),
+              content: Text('保存中...'),
+            ),
           );
-          final form = {
-            'name': _taskName,
-            'intervalDays': _intervalDays,
-            'lastDoneDate': _lastDoneDate ?? DateTime.now(),
-            'createdAt': DateTime.now(),
-            'userId': FirebaseAuth.instance.currentUser!.uid,
-          };
-          _taskRepository.addTask(form).then((value) {
+          final task = Task(
+            id: widget.task.id,
+            name: _taskName,
+            intervalDays: _intervalDays,
+            lastDoneDate: _lastDoneDate,
+            createdAt: DateTime.now(),
+          );
+          _taskRepository.updateTask(task).then((value) {
             Navigator.of(context).pop();
           });
         }
