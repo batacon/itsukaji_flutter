@@ -2,9 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:itsukaji_flutter/firebase_options.dart';
-import 'package:itsukaji_flutter/pages/sign_in_page.dart';
-import 'package:itsukaji_flutter/pages/task_list_page.dart';
+import 'package:itsukaji_flutter/common/firebase_options.dart';
+import 'package:itsukaji_flutter/presentation/pages/sign_in_page.dart';
+import 'package:itsukaji_flutter/presentation/pages/task_list_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

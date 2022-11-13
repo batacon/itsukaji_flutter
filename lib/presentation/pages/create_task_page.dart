@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:itsukaji_flutter/components/task_create_form.dart';
+import 'package:itsukaji_flutter/presentation/components/task_create_form.dart';
 
 class CreateTaskPage extends StatelessWidget {
   const CreateTaskPage({Key? key}) : super(key: key);

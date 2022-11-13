@@ -33,7 +33,7 @@ class Task {
       id: snapshot.id,
       name: data['name'],
       intervalDays: data['intervalDays'],
-      lastDoneDate: data['lastDoneDate']?.toDate(),
+      lastDoneDate: data['lastDoneDate'].toDate(),
       createdAt: data['createdAt'].toDate(),
     );
   }

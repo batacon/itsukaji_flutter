@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:itsukaji_flutter/firebase_firestore.dart';
+import 'package:itsukaji_flutter/common/firebase_firestore.dart';
 import 'package:itsukaji_flutter/models/task.dart';
 
 class TaskRepository {

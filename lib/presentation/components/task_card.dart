@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:itsukaji_flutter/components/task_card_content.dart';
-import 'package:itsukaji_flutter/components/task_card_edge.dart';
 import 'package:itsukaji_flutter/models/task.dart';
-import 'package:itsukaji_flutter/pages/edit_task_page.dart';
+import 'package:itsukaji_flutter/presentation/components/task_card_content.dart';
+import 'package:itsukaji_flutter/presentation/components/task_card_edge.dart';
+import 'package:itsukaji_flutter/presentation/pages/edit_task_page.dart';
 import 'package:itsukaji_flutter/repositories/tasks_repository.dart';
 
 class TaskCard extends StatelessWidget {
