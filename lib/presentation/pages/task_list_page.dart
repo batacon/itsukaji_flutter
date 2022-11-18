@@ -4,6 +4,7 @@ import 'package:itsukaji_flutter/models/member.dart';
 import 'package:itsukaji_flutter/models/task.dart';
 import 'package:itsukaji_flutter/presentation/components/task_card.dart';
 import 'package:itsukaji_flutter/presentation/pages/create_task_page.dart';
+import 'package:itsukaji_flutter/presentation/pages/settings_page.dart';
 import 'package:itsukaji_flutter/repositories/members_repository.dart';
 import 'package:itsukaji_flutter/repositories/tasks_repository.dart';
 
@@ -24,7 +25,21 @@ class _TaskListPageState extends State<TaskListPage> {
         title: const Text('itsukaji'),
         centerTitle: true,
         elevation: 0,
-        // TODO: ハンバーガーメニューを追加する
+        // TODO: ハンバーガーメニュー
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const SettingsPage();
+                  },
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: _buildTaskList(),
       floatingActionButton: FloatingActionButton(
