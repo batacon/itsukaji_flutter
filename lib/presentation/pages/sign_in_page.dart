@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:itsukaji_flutter/common/firebase_firestore.dart';
+import 'package:itsukaji_flutter/models/invitation_code.dart';
 import 'package:itsukaji_flutter/presentation/pages/task_list_page.dart';
 
 class SignInPage extends StatefulWidget {
@@ -29,6 +30,7 @@ class _SignInPageState extends State<SignInPage> {
               if (userDocuments.isEmpty) {
                 final newGroup = await db.collection('groups').add({
                   'users': [firebaseUser.uid],
+                  'invitation_code': InvitationCode.generate(),
                 });
 
                 db.collection('users').add({
