@@ -41,56 +41,50 @@ class _TaskListPageState extends State<TaskListPage> {
           ),
         ],
       ),
-      body: _buildTaskList(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-            return const CreateTaskPage();
-          }));
+      body: _buildBody(context),
+      floatingActionButton: _buildCreateTaskButton(context),
+    );
+  }
+
+  Widget _buildBody(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 16, right: 16, bottom: 52, left: 16),
+      child: FutureBuilder(
+        future: MembersRepository().getCurrentMember(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final currentMember = snapshot.data as Member;
+            return StreamBuilder<QuerySnapshot>(
+              stream: _tasksRepository.getTasks(currentMember),
+              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasData) {
+                  return _buildTaskList(snapshot);
+                } else {
+                  return const Center(child: Text('家事を作ろう'));
+                }
+              },
+            );
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
         },
-        tooltip: 'Create New Task',
-        child: const Icon(Icons.add),
       ),
     );
   }
 
-  Widget _buildTaskList() {
-    return FutureBuilder(
-      future: MembersRepository().getCurrentMember(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          final currentMember = snapshot.data as Member;
+  Widget _buildTaskList(AsyncSnapshot<QuerySnapshot<Object?>> snapshot) {
+    return ListView(
+      shrinkWrap: true,
+      children: [
+        ..._sortTasksByDaysUntilNext(snapshot.data!.docs).map((QueryDocumentSnapshot document) {
+          final documentData = document as QueryDocumentSnapshot<Map<String, dynamic>>;
+          final task = Task.fromFirestore(documentData);
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: StreamBuilder<QuerySnapshot>(
-              stream: _tasksRepository.getTasks(currentMember),
-              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.hasData) {
-                  return ListView(
-                    shrinkWrap: true,
-                    children: [
-                      const SizedBox(height: 16),
-                      ..._sortTasksByDaysUntilNext(snapshot.data!.docs).map((QueryDocumentSnapshot document) {
-                        final documentData = document as QueryDocumentSnapshot<Map<String, dynamic>>;
-                        final task = Task.fromFirestore(documentData);
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 4.0),
-                          child: TaskCard(task: task),
-                        );
-                      }).toList(),
-                      const SizedBox(height: 52),
-                    ],
-                  );
-                } else {
-                  return Container();
-                }
-              },
-            ),
+            padding: const EdgeInsets.only(bottom: 4.0),
+            child: TaskCard(task: task),
           );
-        } else {
-          return const Center(child: Text('家事を作ろう'));
-        }
-      },
+        }).toList(),
+      ],
     );
   }
 
@@ -101,6 +95,18 @@ class _TaskListPageState extends State<TaskListPage> {
       return aTask.daysUntilNext().compareTo(bTask.daysUntilNext());
     });
     return documents;
+  }
+
+  FloatingActionButton _buildCreateTaskButton(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          return const CreateTaskPage();
+        }));
+      },
+      tooltip: 'Create New Task',
+      child: const Icon(Icons.add),
+    );
   }
 }
 
