@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
-const codeLength = 32;
+const codeLength = 64;
 
 class InvitationCode {
   static String generate() {
