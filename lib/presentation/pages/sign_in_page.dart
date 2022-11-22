@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:itsukaji_flutter/common/firebase_firestore.dart';
-import 'package:itsukaji_flutter/models/invitation_code.dart';
+import 'package:itsukaji_flutter/common/show_snack_bar_with_text.dart';
 import 'package:itsukaji_flutter/presentation/pages/task_list_page.dart';
+import 'package:itsukaji_flutter/repositories/groups_repository.dart';
+import 'package:itsukaji_flutter/repositories/members_repository.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class SignInPage extends StatefulWidget {
@@ -14,6 +15,9 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  final _groupsRepository = GroupsRepository();
+  final _membersRepository = MembersRepository();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,20 +42,10 @@ class _SignInPageState extends State<SignInPage> {
       onPressed: () async {
         try {
           final firebaseUser = (await signInWithGoogle()).user!;
-
-          final result = await db.collection('users').where('id', isEqualTo: firebaseUser.uid).get();
-          final userDocuments = result.docs;
-          if (userDocuments.isEmpty) {
-            final newGroup = await db.collection('groups').add({
-              'users': [firebaseUser.uid],
-              'invitation_code': InvitationCode.generate(),
-            });
-
-            db.collection('users').add({
-              'id': firebaseUser.uid,
-              'name': firebaseUser.displayName,
-              'group_id': newGroup.id,
-            });
+          final foundUser = await _membersRepository.findMemberById(firebaseUser.uid);
+          if (foundUser == null) {
+            final newGroup = await _groupsRepository.createGroup();
+            await _membersRepository.createMember(firebaseUser, newGroup.id);
           }
           if (!mounted) return;
 
@@ -60,15 +54,7 @@ class _SignInPageState extends State<SignInPage> {
           );
         } on Exception catch (e) {
           print('${e.toString()}');
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              backgroundColor: Colors.black,
-              content: Text(
-                'ログインに失敗しました。時間をおいて再度お試しください。',
-                style: TextStyle(color: Colors.redAccent, letterSpacing: 0.5),
-              ),
-            ),
-          );
+          showSnackBarWithText(context, 'ログインに失敗しました。時間をおいて再度お試しください。');
         }
       },
     );
@@ -87,21 +73,37 @@ class _SignInPageState extends State<SignInPage> {
   Widget _buildQRCodeScannerButton(BuildContext context) {
     return ElevatedButton(
       child: const Text('QRコードで招待してもらう'),
-      onPressed: () {
-        showModalBottomSheet(
-          context: context,
-          builder: (context) {
-            return MobileScanner(
-              allowDuplicates: false,
-              controller: MobileScannerController(facing: CameraFacing.back, torchEnabled: false),
-              onDetect: (barcode, args) {
-                if (barcode.rawValue == null) {
-                  debugPrint('Failed to scan Barcode');
-                } else {
-                  final String code = barcode.rawValue!;
-                  debugPrint('Barcode found! $code');
-                }
-              },
+      onPressed: () => _openQRCodeScanner(context),
+    );
+  }
+
+  _openQRCodeScanner(BuildContext context) async {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return MobileScanner(
+          allowDuplicates: false,
+          controller: MobileScannerController(facing: CameraFacing.back, torchEnabled: false),
+          onDetect: (barcode, args) async {
+            if (barcode.rawValue == null) return;
+
+            final invitedGroup = await _groupsRepository.getGroupByInvitationCode(barcode.rawValue!);
+            if (invitedGroup == null) {
+              if (!mounted) return;
+              return showSnackBarWithText(context, '招待コードが無効です');
+            }
+
+            final firebaseUser = (await signInWithGoogle()).user!;
+            final existingUser = await _membersRepository.findMemberById(firebaseUser.uid);
+            if (existingUser == null) {
+              await _membersRepository.createMember(firebaseUser, invitedGroup.id);
+            } else {
+              await _membersRepository.updateMemberGroup(existingUser, invitedGroup.id);
+            }
+            if (!mounted) return;
+
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const TaskListPage()),
             );
           },
         );
