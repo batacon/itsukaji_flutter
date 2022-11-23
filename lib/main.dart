@@ -23,18 +23,7 @@ class MainApp extends StatelessWidget {
         // TODO: オリジナルのカラーパレットを使う
         primarySwatch: Colors.blue,
       ),
-      home: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return const TaskListPage();
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          return const SignInPage();
-        },
-      ),
+      home: FirebaseAuth.instance.currentUser == null ? const SignInPage() : const TaskListPage(),
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

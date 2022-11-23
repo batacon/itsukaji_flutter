@@ -17,6 +17,7 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   final _groupsRepository = GroupsRepository();
   final _membersRepository = MembersRepository();
+  bool _isSigningIn = false;
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +26,15 @@ class _SignInPageState extends State<SignInPage> {
         title: const Text('ログイン'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildSignInButton(context),
-            _buildQRCodeScannerButton(context),
-          ],
-        ),
+        child: _isSigningIn
+            ? const CircularProgressIndicator()
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildSignInButton(context),
+                  _buildQRCodeScannerButton(context),
+                ],
+              ),
       ),
     );
   }
@@ -41,6 +44,7 @@ class _SignInPageState extends State<SignInPage> {
       child: const Text('Googleでログイン'),
       onPressed: () async {
         try {
+          setState(() => _isSigningIn = true);
           final firebaseUser = (await signInWithGoogle()).user!;
           final foundUser = await _membersRepository.findMemberById(firebaseUser.uid);
           if (foundUser == null) {
@@ -53,8 +57,10 @@ class _SignInPageState extends State<SignInPage> {
             MaterialPageRoute(builder: (context) => const TaskListPage()),
           );
         } on Exception catch (e) {
-          print('${e.toString()}');
+          print(e.toString());
           showSnackBarWithText(context, 'ログインに失敗しました。時間をおいて再度お試しください。');
+        } finally {
+          setState(() => _isSigningIn = false);
         }
       },
     );
