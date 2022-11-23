@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:itsukaji_flutter/models/group.dart';
+import 'package:itsukaji_flutter/presentation/pages/sign_in_page.dart';
 import 'package:itsukaji_flutter/repositories/groups_repository.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -49,11 +50,12 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             ElevatedButton(
               onPressed: () async {
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => const SignInPage()),
+                  (_) => false,
+                );
                 await FirebaseAuth.instance.signOut();
                 await GoogleSignIn().disconnect();
-                if (!mounted) return;
-
-                Navigator.of(context).popUntil((route) => route.isFirst);
               },
               child: const Text('Sign Out'),
             ),
