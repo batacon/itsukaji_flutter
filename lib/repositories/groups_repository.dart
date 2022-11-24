@@ -8,8 +8,8 @@ class GroupsRepository {
     final currentUser = FirebaseAuth.instance.currentUser!;
     final userDocument = await db.collection("users").where("id", isEqualTo: currentUser.uid).get();
     final groupId = userDocument.docs.first.get("group_id");
-    final groupDocument = await db.collection("groups").where("id", isEqualTo: groupId).get();
-    return Group.fromFirestore(groupDocument.docs.first);
+    final groupDocument = await db.collection("groups").doc(groupId).get();
+    return Group.fromFirestore(groupDocument);
   }
 
   Future<Group?> getGroupByInvitationCode(String invitationCode) async {
