@@ -91,26 +91,35 @@ class _SignInPageState extends State<SignInPage> {
           allowDuplicates: false,
           controller: MobileScannerController(facing: CameraFacing.back, torchEnabled: false),
           onDetect: (barcode, args) async {
-            if (barcode.rawValue == null) return;
+            try {
+              if (barcode.rawValue == null) return;
 
-            final invitedGroup = await _groupsRepository.getGroupByInvitationCode(barcode.rawValue!);
-            if (invitedGroup == null) {
+              final firebaseUser = (await signInWithGoogle()).user!;
+              final invitedGroup = await _groupsRepository.getGroupByInvitationCode(barcode.rawValue!);
+              if (invitedGroup == null) {
+                if (!mounted) return;
+                return showSnackBarWithText(context, '招待コードが無効です');
+              }
+
+              final existingUser = await _membersRepository.findMemberById(firebaseUser.uid);
+              if (existingUser == null) {
+                await _membersRepository.createMember(firebaseUser, invitedGroup.id);
+              } else {
+                await _membersRepository.updateMemberGroup(existingUser, invitedGroup.id);
+              }
               if (!mounted) return;
-              return showSnackBarWithText(context, '招待コードが無効です');
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => const TaskListPage()),
+                (_) => false,
+              );
+            } catch (e) {
+              print(e.toString());
+              showSnackBarWithText(context, 'ログインに失敗しました。時間をおいて再度お試しください。');
+              if (FirebaseAuth.instance.currentUser != null) {
+                await FirebaseAuth.instance.signOut();
+                await GoogleSignIn().disconnect();
+              }
             }
-
-            final firebaseUser = (await signInWithGoogle()).user!;
-            final existingUser = await _membersRepository.findMemberById(firebaseUser.uid);
-            if (existingUser == null) {
-              await _membersRepository.createMember(firebaseUser, invitedGroup.id);
-            } else {
-              await _membersRepository.updateMemberGroup(existingUser, invitedGroup.id);
-            }
-            if (!mounted) return;
-
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => const TaskListPage()),
-            );
           },
         );
       },
