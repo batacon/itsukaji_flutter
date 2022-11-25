@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:itsukaji_flutter/models/member.dart';
 import 'package:itsukaji_flutter/models/task.dart';
@@ -54,11 +53,11 @@ class _TaskListPageState extends State<TaskListPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final currentMember = snapshot.data as Member;
-            return StreamBuilder<QuerySnapshot>(
+            return StreamBuilder<List<Task>>(
               stream: _tasksRepository.getTasks(currentMember),
-              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.hasData) {
-                  return _buildTaskList(snapshot);
+              builder: (context, AsyncSnapshot<List<Task>> taskListSnapshot) {
+                if (taskListSnapshot.hasData) {
+                  return _buildTaskList(taskListSnapshot.data!);
                 } else {
                   return const Center(child: Text('家事を作ろう'));
                 }
@@ -72,13 +71,11 @@ class _TaskListPageState extends State<TaskListPage> {
     );
   }
 
-  Widget _buildTaskList(AsyncSnapshot<QuerySnapshot<Object?>> snapshot) {
+  Widget _buildTaskList(List<Task> taskList) {
     return ListView(
       shrinkWrap: true,
       children: [
-        ..._sortTasksByDaysUntilNext(snapshot.data!.docs).map((QueryDocumentSnapshot document) {
-          final documentData = document as QueryDocumentSnapshot<Map<String, dynamic>>;
-          final task = Task.fromFirestore(documentData);
+        ..._sortTasksByDaysUntilNext(taskList).map((task) {
           return Padding(
             padding: const EdgeInsets.only(bottom: 4.0),
             child: TaskCard(task: task),
@@ -88,13 +85,11 @@ class _TaskListPageState extends State<TaskListPage> {
     );
   }
 
-  List<QueryDocumentSnapshot<Object?>> _sortTasksByDaysUntilNext(List<QueryDocumentSnapshot<Object?>> documents) {
-    documents.sort((a, b) {
-      final aTask = Task.fromFirestore(a as QueryDocumentSnapshot<Map<String, dynamic>>);
-      final bTask = Task.fromFirestore(b as QueryDocumentSnapshot<Map<String, dynamic>>);
-      return aTask.daysUntilNext().compareTo(bTask.daysUntilNext());
+  List<Task> _sortTasksByDaysUntilNext(List<Task> taskList) {
+    taskList.sort((a, b) {
+      return a.daysUntilNext().compareTo(b.daysUntilNext());
     });
-    return documents;
+    return taskList;
   }
 
   FloatingActionButton _buildCreateTaskButton(BuildContext context) {
