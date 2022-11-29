@@ -22,6 +22,7 @@ dependencies:
   flutter_svg: ^1.1.6
   mobile_scanner: ^2.1.0
   qr_flutter: ^4.0.0
+  flutter_signin_button: ^2.0.0
 
 dev_dependencies:
   flutter_test:
