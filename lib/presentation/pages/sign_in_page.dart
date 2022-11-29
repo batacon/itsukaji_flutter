@@ -108,6 +108,7 @@ class _SignInPageState extends State<SignInPage> {
                 await _membersRepository.updateMemberGroup(existingUser, invitedGroup.id);
               }
               if (!mounted) return;
+              showSnackBarWithText(context, '招待コードが無効です');
               Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => const TaskListPage()),
                 (_) => false,
