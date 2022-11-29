@@ -21,45 +21,42 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('グループ設定'),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            FutureBuilder(
-              future: _groupsRepository.getCurrentGroup(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  final group = snapshot.data as Group;
-                  return Center(
-                    child: Column(
-                      children: [
-                        const Text('グループコード'),
-                        QrImage(
-                          data: group.invitationCode,
-                          version: QrVersions.auto,
-                          size: 200.0,
-                        ),
-                      ],
+        child: FutureBuilder(
+          future: _groupsRepository.getCurrentGroup(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              final group = snapshot.data as Group;
+              return Center(
+                child: Column(
+                  children: [
+                    const Text('グループコード'),
+                    QrImage(
+                      data: group.invitationCode,
+                      version: QrVersions.auto,
+                      size: 200.0,
                     ),
-                  );
-                } else {
-                  return const CircularProgressIndicator();
-                }
-              },
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => const SignInPage()),
-                  (_) => false,
-                );
-                await FirebaseAuth.instance.signOut();
-                await GoogleSignIn().disconnect();
-              },
-              child: const Text('Sign Out'),
-            ),
-          ],
+                    ElevatedButton(
+                      onPressed: () async {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(builder: (context) => const SignInPage()),
+                          (_) => false,
+                        );
+                        await FirebaseAuth.instance.signOut();
+                        await GoogleSignIn().disconnect();
+                      },
+                      child: const Text('Sign Out'),
+                    ),
+                  ],
+                ),
+              );
+            } else {
+              return const CircularProgressIndicator();
+            }
+          },
         ),
       ),
     );

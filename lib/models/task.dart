@@ -16,14 +16,6 @@ class Task {
   final DateTime lastDoneDate;
   final DateTime createdAt;
 
-  factory Task.fromJson(Map<String, dynamic> json) => Task(
-        id: json["id"],
-        name: json["name"],
-        intervalDays: json["intervalDays"],
-        lastDoneDate: DateTime.parse(json["lastDoneDate"]),
-        createdAt: DateTime.parse(json["createdAt"]),
-      );
-
   factory Task.fromFirestore(
     QueryDocumentSnapshot<Map<String, dynamic>> snapshot,
   ) {

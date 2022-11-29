@@ -9,6 +9,7 @@ class CreateTaskPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create New Task'),
+        centerTitle: true,
         elevation: 0,
       ),
       body: Column(

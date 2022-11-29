@@ -12,6 +12,7 @@ class EditTaskPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit New Task'),
+        centerTitle: true,
         elevation: 0,
       ),
       body: Column(

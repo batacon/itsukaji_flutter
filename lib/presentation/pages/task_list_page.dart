@@ -56,7 +56,7 @@ class _TaskListPageState extends State<TaskListPage> {
             return StreamBuilder<List<Task>>(
               stream: _tasksRepository.getTasks(currentMember),
               builder: (context, AsyncSnapshot<List<Task>> taskListSnapshot) {
-                if (taskListSnapshot.hasData) {
+                if (taskListSnapshot.hasData && taskListSnapshot.data!.isNotEmpty) {
                   return _buildTaskList(taskListSnapshot.data!);
                 } else {
                   return const Center(child: Text('家事を作ろう'));
@@ -72,23 +72,24 @@ class _TaskListPageState extends State<TaskListPage> {
   }
 
   Widget _buildTaskList(List<Task> taskList) {
+    final sortedTaskList = _sortTasksByDaysUntilNext(taskList);
     return ListView(
       shrinkWrap: true,
-      children: [
-        ..._sortTasksByDaysUntilNext(taskList).map((task) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 4.0),
-            child: TaskCard(task: task),
-          );
-        }).toList(),
-      ],
+      children: _buildCardList(sortedTaskList),
     );
   }
 
+  List<Widget> _buildCardList(List<Task> taskList) {
+    return taskList.map((task) {
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 4.0),
+        child: TaskCard(task: task),
+      );
+    }).toList();
+  }
+
   List<Task> _sortTasksByDaysUntilNext(List<Task> taskList) {
-    taskList.sort((a, b) {
-      return a.daysUntilNext().compareTo(b.daysUntilNext());
-    });
+    taskList.sort((taskA, taskB) => taskA.daysUntilNext().compareTo(taskB.daysUntilNext()));
     return taskList;
   }
 

@@ -11,12 +11,6 @@ class Member {
   final String name;
   final String groupId;
 
-  factory Member.fromJson(Map<String, dynamic> json) => Member(
-        id: json["id"],
-        name: json["name"],
-        groupId: json["group_id"],
-      );
-
   factory Member.fromFirestore(QueryDocumentSnapshot<Map<String, dynamic>> snapshot) {
     final data = snapshot.data();
     return Member(
