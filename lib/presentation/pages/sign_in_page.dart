@@ -63,7 +63,8 @@ class _SignInPageState extends State<SignInPage> {
           );
         } on Exception catch (e) {
           print(e.toString());
-          showSnackBarWithText(context, 'ログインに失敗しました。時間をおいて再度お試しください。');
+          showSnackBarWithText(context, e.toString());
+          // showSnackBarWithText(context, 'ログインに失敗しました。時間をおいて再度お試しください。');
         } finally {
           setState(() => _isSigningIn = false);
         }
@@ -124,7 +125,8 @@ class _SignInPageState extends State<SignInPage> {
               );
             } catch (e) {
               print(e.toString());
-              showSnackBarWithText(context, 'ログインに失敗しました。時間をおいて再度お試しください。');
+              showSnackBarWithText(context, e.toString());
+              // showSnackBarWithText(context, 'ログインに失敗しました。時間をおいて再度お試しください。');
               if (FirebaseAuth.instance.currentUser != null) {
                 await FirebaseAuth.instance.signOut();
                 await GoogleSignIn().disconnect();

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.itsukaji_flutter">
+    package="com.batacon.itsukaji">
    <application
-        android:label="itsukaji_flutter"
+        android:label="itsukaji"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
