@@ -27,7 +27,7 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
+        child: ListView(
           children: [
             FutureBuilder(
               future: _groupsRepository.getCurrentGroup(),
@@ -43,7 +43,6 @@ class _SettingsPageState extends State<SettingsPage> {
                           version: QrVersions.auto,
                           size: 200.0,
                         ),
-                        _buildDeleteAccountButton(context),
                       ],
                     ),
                   );
@@ -52,7 +51,10 @@ class _SettingsPageState extends State<SettingsPage> {
                 }
               },
             ),
+            const SizedBox(height: 20),
             _buildSignOutButton(context),
+            const SizedBox(height: 600),
+            _buildDeleteAccountButton(context),
           ],
         ),
       ),
@@ -64,13 +66,19 @@ class _SettingsPageState extends State<SettingsPage> {
       onPressed: () async {
         _signOut(context);
       },
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size(double.infinity, 50),
+      ),
       child: const Text('Sign Out'),
     );
   }
 
   ElevatedButton _buildDeleteAccountButton(BuildContext context) {
     return ElevatedButton(
-      style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.red,
+        minimumSize: const Size(double.infinity, 50),
+      ),
       onPressed: () async {
         showDialog(
           context: context,

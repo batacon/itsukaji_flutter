@@ -188,36 +188,44 @@ class _TaskEditFormState extends State<TaskEditForm> {
       onPressed: () {
         showDialog(
             context: context,
-            builder: (context) {
+            builder: (dialogContext) {
               // TODO: ダイアログのデザインを整える
               return AlertDialog(
                 title: const Text('本当に消しますか？'),
                 content: Text('削除すると取り消しできません。$_taskNameを本当に消しますか？'),
                 actions: [
-                  ElevatedButton(
-                    child: const Text('やめとく'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  ElevatedButton(
-                    child: const Text('本当に消す'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      _tasksRepository.removeTask(widget.task.id).then((value) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            duration: const Duration(milliseconds: 1500),
-                            content: Text('$_taskNameを削除中...'),
-                          ),
-                        );
-                        Navigator.of(context).pop();
-                      });
-                    },
-                  ),
+                  _buildCancelButton(dialogContext),
+                  _buildDeleteButton(dialogContext),
                 ],
               );
             });
+      },
+    );
+  }
+
+  Widget _buildCancelButton(BuildContext dialogContext) {
+    return ElevatedButton(
+      child: const Text('やめとく'),
+      onPressed: () {
+        Navigator.of(dialogContext).pop();
+      },
+    );
+  }
+
+  Widget _buildDeleteButton(BuildContext dialogContext) {
+    return ElevatedButton(
+      child: const Text('本当に消す'),
+      onPressed: () {
+        _tasksRepository.removeTask(widget.task.id).then((value) {
+          ScaffoldMessenger.of(dialogContext).showSnackBar(
+            SnackBar(
+              duration: const Duration(milliseconds: 1500),
+              content: Text('$_taskNameを削除中...'),
+            ),
+          );
+        });
+        Navigator.of(dialogContext).pop();
+        Navigator.of(dialogContext).pop();
       },
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:itsukaji_flutter/common/date_format.dart';
+import 'package:itsukaji_flutter/common/show_snack_bar_with_text.dart';
 import 'package:itsukaji_flutter/repositories/tasks_repository.dart';
 
 class TaskCreateForm extends StatefulWidget {
@@ -173,7 +174,9 @@ class _TaskCreateFormState extends State<TaskCreateForm> {
     return IconButton(
       icon: const Icon(Icons.check, color: Colors.blue, size: 32),
       onPressed: () {
-        if (_formKey.currentState!.validate()) {
+        if (!_formKey.currentState!.validate()) return;
+
+        try {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               duration: Duration(milliseconds: 1500),
@@ -189,6 +192,10 @@ class _TaskCreateFormState extends State<TaskCreateForm> {
           _tasksRepository.addTask(form).then((value) {
             Navigator.of(context).pop();
           });
+        } catch (e) {
+          print(e.toString());
+          showSnackBarWithText(context, e.toString());
+          // showSnackBarWithText(context, '保存に失敗しました');
         }
       },
     );

@@ -31,9 +31,7 @@ class _TaskListPageState extends State<TaskListPage> {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) {
-                    return const SettingsPage();
-                  },
+                  builder: (context) => const SettingsPage(),
                 ),
               );
             },
@@ -105,13 +103,3 @@ class _TaskListPageState extends State<TaskListPage> {
     );
   }
 }
-
-// ElevatedButton(
-//   onPressed: () {
-//     FirebaseAuth.instance.signOut();
-//     Navigator.of(context).pushReplacement(
-//       MaterialPageRoute(builder: (context) => const SignInPage()),
-//     );
-//   },
-//   child: const Text('Sign Out'),
-// ),
