@@ -5,9 +5,8 @@ import 'package:itsukaji_flutter/models/invitation_code.dart';
 
 class GroupsRepository {
   Future<Group> getCurrentGroup() async {
-    final currentUser = FirebaseAuth.instance.currentUser!;
-    final userDocument = await db.collection("users").where("id", isEqualTo: currentUser.uid).get();
-    final groupId = userDocument.docs.first.get("group_id");
+    final userDocument = await db.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).get();
+    final groupId = userDocument.get("group_id");
     final groupDocument = await db.collection("groups").doc(groupId).get();
     return Group.fromFirestore(groupDocument);
   }
@@ -20,6 +19,12 @@ class GroupsRepository {
 
   Future<Group> createGroup() async {
     final newGroupReference = await db.collection("groups").add({"invitation_code": InvitationCode.generate()});
-    return Group.fromFirestore((await newGroupReference.get()));
+    final documentSnapshot = await newGroupReference.get();
+    return Group.fromFirestore(documentSnapshot);
+  }
+
+  Future<void> deleteCurrentGroup() async {
+    final currentGroup = await getCurrentGroup();
+    await db.collection("groups").doc(currentGroup.id).delete();
   }
 }

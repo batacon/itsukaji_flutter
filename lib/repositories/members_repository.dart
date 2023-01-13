@@ -4,13 +4,13 @@ import 'package:itsukaji_flutter/models/member.dart';
 
 class MembersRepository {
   Future<Member> getCurrentMember() async {
-    final document = await db.collection("users").where("id", isEqualTo: FirebaseAuth.instance.currentUser!.uid).get();
-    return Member.fromFirestore(document.docs.first);
+    final document = await db.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).get();
+    return Member.fromFirestore(document);
   }
 
   Future<Member?> findMemberById(String id) async {
-    final document = await db.collection("users").where("id", isEqualTo: id).get();
-    return document.docs.isEmpty ? null : Member.fromFirestore(document.docs.first);
+    final document = await db.collection('users').doc(id).get();
+    return document.exists ? Member.fromFirestore(document) : null;
   }
 
   Future<List<Member>> getMembersOf(String groupId) async {
@@ -19,8 +19,7 @@ class MembersRepository {
   }
 
   Future<void> createMember(User firebaseUser, String groupId) async {
-    await db.collection("users").add({
-      "id": firebaseUser.uid,
+    await db.collection("users").doc(firebaseUser.uid).set({
       "name": firebaseUser.displayName,
       "group_id": groupId,
     });
@@ -28,5 +27,9 @@ class MembersRepository {
 
   Future<void> updateMemberGroup(Member member, String groupId) async {
     await db.collection("users").doc(member.id).update({'group_id': groupId});
+  }
+
+  Future<void> removeMember(String memberId) async {
+    await db.collection("users").doc(memberId).delete();
   }
 }

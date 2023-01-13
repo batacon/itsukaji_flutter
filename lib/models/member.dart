@@ -11,8 +11,8 @@ class Member {
   final String name;
   final String groupId;
 
-  factory Member.fromFirestore(QueryDocumentSnapshot<Map<String, dynamic>> snapshot) {
-    final data = snapshot.data();
+  factory Member.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot) {
+    final data = snapshot.data()!;
     return Member(
       id: snapshot.id,
       name: data['name'],
