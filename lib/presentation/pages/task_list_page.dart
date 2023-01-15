@@ -16,6 +16,9 @@ class TaskListPage extends StatefulWidget {
 
 class _TaskListPageState extends State<TaskListPage> {
   final _tasksRepository = TasksRepository();
+  String _searchWord = '';
+  final _searchWordController = TextEditingController();
+  final _searchWordFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -70,10 +73,39 @@ class _TaskListPageState extends State<TaskListPage> {
   }
 
   Widget _buildTaskList(List<Task> taskList) {
-    final sortedTaskList = _sortTasksByDaysUntilNext(taskList);
+    final filteredTaskList =
+        _searchWord.isEmpty ? taskList : taskList.where((task) => task.name.contains(_searchWord)).toList();
+    final sortedTaskList = _sortTasksByDaysUntilNext(filteredTaskList);
     return ListView(
       shrinkWrap: true,
-      children: _buildCardList(sortedTaskList),
+      children: [
+        _buildSearchField(),
+        const SizedBox(height: 20),
+        ..._buildCardList(sortedTaskList),
+      ],
+    );
+  }
+
+  Widget _buildSearchField() {
+    return TextField(
+      controller: _searchWordController,
+      focusNode: _searchWordFocusNode,
+      decoration: InputDecoration(
+        constraints: const BoxConstraints(maxHeight: 60),
+        border: const OutlineInputBorder(),
+        prefixIcon: const Icon(Icons.search),
+        suffix: IconButton(
+          onPressed: () {
+            setState(() {
+              _searchWord = '';
+              _searchWordController.clear();
+              _searchWordFocusNode.unfocus();
+            });
+          },
+          icon: const Icon(Icons.clear),
+        ),
+      ),
+      onChanged: (value) => setState(() => _searchWord = value),
     );
   }
 
