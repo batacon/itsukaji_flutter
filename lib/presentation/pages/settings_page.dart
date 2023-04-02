@@ -8,7 +8,7 @@ import 'package:itsukaji_flutter/repositories/members_repository.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+  const SettingsPage({final Key? key}) : super(key: key);
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
@@ -19,7 +19,7 @@ class _SettingsPageState extends State<SettingsPage> {
   final _membersRepository = MembersRepository();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('グループ設定'),
@@ -31,7 +31,7 @@ class _SettingsPageState extends State<SettingsPage> {
           children: [
             FutureBuilder(
               future: _groupsRepository.getCurrentGroup(),
-              builder: (context, snapshot) {
+              builder: (final context, final snapshot) {
                 if (snapshot.hasData) {
                   final group = snapshot.data as Group;
                   return Center(
@@ -61,7 +61,7 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  ElevatedButton _buildSignOutButton(BuildContext context) {
+  ElevatedButton _buildSignOutButton(final BuildContext context) {
     return ElevatedButton(
       onPressed: () async {
         _signOut(context);
@@ -73,7 +73,7 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  ElevatedButton _buildDeleteAccountButton(BuildContext context) {
+  ElevatedButton _buildDeleteAccountButton(final BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.red,
@@ -82,7 +82,7 @@ class _SettingsPageState extends State<SettingsPage> {
       onPressed: () async {
         showDialog(
           context: context,
-          builder: (context) {
+          builder: (final context) {
             return AlertDialog(
               title: const Text('アカウントを削除しますか？'),
               content: const Text('この操作は取り消せません。'),
@@ -110,7 +110,7 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Future<void> _signOut(BuildContext context) async {
+  Future<void> _signOut(final BuildContext context) async {
     _backToSignInPage(context);
     await FirebaseAuth.instance.signOut();
     await GoogleSignIn().disconnect();
@@ -136,10 +136,10 @@ class _SettingsPageState extends State<SettingsPage> {
     await currentUser.delete();
   }
 
-  void _backToSignInPage(BuildContext context) {
+  void _backToSignInPage(final BuildContext context) {
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) => const SignInPage()),
-      (_) => false,
+      MaterialPageRoute(builder: (final context) => const SignInPage()),
+      (final _) => false,
     );
   }
 }

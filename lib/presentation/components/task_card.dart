@@ -6,25 +6,25 @@ import 'package:itsukaji_flutter/presentation/pages/edit_task_page.dart';
 import 'package:itsukaji_flutter/repositories/tasks_repository.dart';
 
 class TaskCard extends StatelessWidget {
-  const TaskCard({required this.task, Key? key}) : super(key: key);
+  const TaskCard({required this.task, final Key? key}) : super(key: key);
 
   final Task task;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     // TODO: カードの裏側にGood Jobアイコンを隠しておく。スライドした時に見えるようにし、カードが消えると同時に消える。
     return InkWell(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+        Navigator.of(context).push(MaterialPageRoute(builder: (final context) {
           return EditTaskPage(task: task);
         }));
       },
       child: Dismissible(
         key: UniqueKey(),
         direction: DismissDirection.endToStart,
-        onDismissed: (direction) {
+        onDismissed: (final direction) {
           TasksRepository().setTaskDone(task).then(
-                (value) => ScaffoldMessenger.of(context).showSnackBar(
+                (final value) => ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Good Job!'),
                   ),
@@ -46,7 +46,7 @@ class TaskCard extends StatelessWidget {
     );
   }
 
-  Color _cardColor(Task thisTask) {
+  Color _cardColor(final Task thisTask) {
     if (thisTask.isDueToday()) {
       return const Color(0xFFFDF5F9);
     } else if (thisTask.isDueTomorrow()) {

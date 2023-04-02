@@ -17,7 +17,7 @@ class Task {
   final DateTime createdAt;
 
   factory Task.fromFirestore(
-    QueryDocumentSnapshot<Map<String, dynamic>> snapshot,
+    final QueryDocumentSnapshot<Map<String, dynamic>> snapshot,
   ) {
     final data = snapshot.data();
     return Task(

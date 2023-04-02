@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:itsukaji_flutter/presentation/components/task_create_form.dart';
 
 class CreateTaskPage extends StatelessWidget {
-  const CreateTaskPage({Key? key}) : super(key: key);
+  const CreateTaskPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create New Task'),

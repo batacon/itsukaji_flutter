@@ -9,7 +9,7 @@ class Group {
     required this.invitationCode,
   });
 
-  factory Group.fromFirestore(DocumentSnapshot document) {
+  factory Group.fromFirestore(final DocumentSnapshot document) {
     final data = document.data() as Map<String, dynamic>;
     final group = Group(
       id: document.id,
@@ -18,5 +18,5 @@ class Group {
     return group;
   }
 
-  // get members => _members;
+// get members => _members;
 }

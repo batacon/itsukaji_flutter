@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:itsukaji_flutter/models/task.dart';
 
 class TaskCardEdge extends StatelessWidget {
-  const TaskCardEdge({required this.task, Key? key}) : super(key: key);
+  const TaskCardEdge({required this.task, final Key? key}) : super(key: key);
 
   final Task task;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     return Container(
       width: 24,
       height: 92,
@@ -15,7 +15,7 @@ class TaskCardEdge extends StatelessWidget {
     );
   }
 
-  Color _cardEdgeColor(Task thisTask) {
+  Color _cardEdgeColor(final Task thisTask) {
     if (thisTask.isDueToday()) {
       return const Color(0xFFF5BECF);
     } else if (thisTask.isDueTomorrow()) {

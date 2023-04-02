@@ -3,12 +3,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:itsukaji_flutter/models/task.dart';
 
 class TaskCardContent extends StatelessWidget {
-  const TaskCardContent({required this.task, Key? key}) : super(key: key);
+  const TaskCardContent({required this.task, final Key? key}) : super(key: key);
 
   final Task task;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Column(
@@ -24,7 +24,7 @@ class TaskCardContent extends StatelessWidget {
     );
   }
 
-  Widget _buildCardHeader(int intervalDays) {
+  Widget _buildCardHeader(final int intervalDays) {
     return Text(
       'every $intervalDays days',
       style: const TextStyle(
@@ -34,7 +34,7 @@ class TaskCardContent extends StatelessWidget {
     );
   }
 
-  Widget _buildTaskName(String name) {
+  Widget _buildTaskName(final String name) {
     return Text(
       name,
       style: const TextStyle(
@@ -44,7 +44,7 @@ class TaskCardContent extends StatelessWidget {
     );
   }
 
-  Row _buildCardFooter({required int daysUntilNext, required String lastDoneDate}) {
+  Row _buildCardFooter({required final int daysUntilNext, required final String lastDoneDate}) {
     return Row(
       children: [
         const SizedBox(width: 16),
@@ -59,7 +59,7 @@ class TaskCardContent extends StatelessWidget {
     );
   }
 
-  Widget _buildIcon(String iconName) {
+  Widget _buildIcon(final String iconName) {
     return SvgPicture.asset(
       'assets/icons/$iconName.svg',
       width: 16,

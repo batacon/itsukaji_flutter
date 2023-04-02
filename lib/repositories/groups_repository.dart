@@ -11,7 +11,7 @@ class GroupsRepository {
     return Group.fromFirestore(groupDocument);
   }
 
-  Future<Group?> getGroupByInvitationCode(String invitationCode) async {
+  Future<Group?> getGroupByInvitationCode(final String invitationCode) async {
     final document = await db.collection("groups").where("invitation_code", isEqualTo: invitationCode).get();
     if (document.docs.isEmpty) return null;
     return Group.fromFirestore(document.docs.first);

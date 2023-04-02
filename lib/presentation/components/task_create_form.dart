@@ -6,7 +6,7 @@ import 'package:itsukaji_flutter/common/show_snack_bar_with_text.dart';
 import 'package:itsukaji_flutter/repositories/tasks_repository.dart';
 
 class TaskCreateForm extends StatefulWidget {
-  const TaskCreateForm({Key? key}) : super(key: key);
+  const TaskCreateForm({final Key? key}) : super(key: key);
 
   @override
   State<TaskCreateForm> createState() => _TaskCreateFormState();
@@ -23,7 +23,7 @@ class _TaskCreateFormState extends State<TaskCreateForm> {
   DateTime _lastDoneDate = DateTime.now();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
       child: Form(
@@ -42,7 +42,7 @@ class _TaskCreateFormState extends State<TaskCreateForm> {
               decoration: const InputDecoration(
                 hintText: '新しいタスク名を入力（20文字まで）',
               ),
-              validator: (value) {
+              validator: (final value) {
                 if (value == null || value.isEmpty || value.trim() == '') {
                   return 'タスク名を入力してください';
                 }
@@ -52,7 +52,7 @@ class _TaskCreateFormState extends State<TaskCreateForm> {
                 return null;
               },
               autovalidateMode: AutovalidateMode.onUserInteraction,
-              onChanged: (value) {
+              onChanged: (final value) {
                 setState(() {
                   _taskName = value;
                 });
@@ -77,7 +77,7 @@ class _TaskCreateFormState extends State<TaskCreateForm> {
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
                           ],
-                          validator: (value) {
+                          validator: (final value) {
                             if (value == null || value.isEmpty) {
                               return '間隔を入力してください';
                             }
@@ -90,7 +90,7 @@ class _TaskCreateFormState extends State<TaskCreateForm> {
                             return null;
                           },
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          onChanged: (value) {
+                          onChanged: (final value) {
                             _intervalDays = int.parse(value);
                           },
                         ),
@@ -147,10 +147,10 @@ class _TaskCreateFormState extends State<TaskCreateForm> {
     return Text(dateFormatJpString(_lastDoneDate));
   }
 
-  Future<dynamic> _buildDatePicker(BuildContext context) {
+  Future<dynamic> _buildDatePicker(final BuildContext context) {
     return showModalBottomSheet(
       context: context,
-      builder: (context) {
+      builder: (final context) {
         return SafeArea(
           child: SizedBox(
             height: 180,
@@ -158,7 +158,7 @@ class _TaskCreateFormState extends State<TaskCreateForm> {
               mode: CupertinoDatePickerMode.date,
               initialDateTime: DateTime.now(),
               maximumDate: DateTime.now(),
-              onDateTimeChanged: (value) {
+              onDateTimeChanged: (final value) {
                 setState(() {
                   _lastDoneDate = value;
                 });
@@ -189,7 +189,7 @@ class _TaskCreateFormState extends State<TaskCreateForm> {
             'lastDoneDate': _lastDoneDate,
             'createdAt': DateTime.now(),
           };
-          _tasksRepository.addTask(form).then((value) {
+          _tasksRepository.addTask(form).then((final value) {
             Navigator.of(context).pop();
           });
         } catch (e) {

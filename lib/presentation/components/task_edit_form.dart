@@ -6,7 +6,7 @@ import 'package:itsukaji_flutter/models/task.dart';
 import 'package:itsukaji_flutter/repositories/tasks_repository.dart';
 
 class TaskEditForm extends StatefulWidget {
-  const TaskEditForm({required this.task, Key? key}) : super(key: key);
+  const TaskEditForm({required this.task, final Key? key}) : super(key: key);
 
   final Task task;
 
@@ -32,7 +32,7 @@ class _TaskEditFormState extends State<TaskEditForm> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
       child: Form(
@@ -53,7 +53,7 @@ class _TaskEditFormState extends State<TaskEditForm> {
               decoration: const InputDecoration(
                 hintText: '新しいタスク名を入力（20文字まで）',
               ),
-              validator: (value) {
+              validator: (final value) {
                 if (value == null || value.isEmpty || value.trim() == '') {
                   return 'タスク名を入力してください';
                 }
@@ -63,7 +63,7 @@ class _TaskEditFormState extends State<TaskEditForm> {
                 return null;
               },
               autovalidateMode: AutovalidateMode.onUserInteraction,
-              onChanged: (value) {
+              onChanged: (final value) {
                 setState(() {
                   _taskName = value;
                 });
@@ -89,7 +89,7 @@ class _TaskEditFormState extends State<TaskEditForm> {
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
                           ],
-                          validator: (value) {
+                          validator: (final value) {
                             if (value == null || value.isEmpty) {
                               return '間隔を入力してください';
                             }
@@ -102,7 +102,7 @@ class _TaskEditFormState extends State<TaskEditForm> {
                             return null;
                           },
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          onChanged: (value) {
+                          onChanged: (final value) {
                             _intervalDays = int.parse(value);
                           },
                         ),
@@ -159,10 +159,10 @@ class _TaskEditFormState extends State<TaskEditForm> {
     return Text(dateFormatJpString(_lastDoneDate));
   }
 
-  Future<dynamic> _buildDatePicker(BuildContext context) {
+  Future<dynamic> _buildDatePicker(final BuildContext context) {
     return showModalBottomSheet(
       context: context,
-      builder: (context) {
+      builder: (final context) {
         return SafeArea(
           child: SizedBox(
             height: 180,
@@ -170,7 +170,7 @@ class _TaskEditFormState extends State<TaskEditForm> {
               mode: CupertinoDatePickerMode.date,
               initialDateTime: _lastDoneDate,
               maximumDate: DateTime.now(),
-              onDateTimeChanged: (value) {
+              onDateTimeChanged: (final value) {
                 setState(() {
                   _lastDoneDate = value;
                 });
@@ -188,7 +188,7 @@ class _TaskEditFormState extends State<TaskEditForm> {
       onPressed: () {
         showDialog(
             context: context,
-            builder: (dialogContext) {
+            builder: (final dialogContext) {
               // TODO: ダイアログのデザインを整える
               return AlertDialog(
                 title: const Text('本当に消しますか？'),
@@ -203,7 +203,7 @@ class _TaskEditFormState extends State<TaskEditForm> {
     );
   }
 
-  Widget _buildCancelButton(BuildContext dialogContext) {
+  Widget _buildCancelButton(final BuildContext dialogContext) {
     return ElevatedButton(
       child: const Text('やめとく'),
       onPressed: () {
@@ -212,11 +212,11 @@ class _TaskEditFormState extends State<TaskEditForm> {
     );
   }
 
-  Widget _buildDeleteButton(BuildContext dialogContext) {
+  Widget _buildDeleteButton(final BuildContext dialogContext) {
     return ElevatedButton(
       child: const Text('本当に消す'),
       onPressed: () {
-        _tasksRepository.removeTask(widget.task.id).then((value) {
+        _tasksRepository.removeTask(widget.task.id).then((final value) {
           ScaffoldMessenger.of(dialogContext).showSnackBar(
             SnackBar(
               duration: const Duration(milliseconds: 1500),
@@ -248,7 +248,7 @@ class _TaskEditFormState extends State<TaskEditForm> {
             lastDoneDate: _lastDoneDate,
             createdAt: DateTime.now(),
           );
-          _tasksRepository.updateTask(task).then((value) {
+          _tasksRepository.updateTask(task).then((final value) {
             Navigator.of(context).pop();
           });
         }

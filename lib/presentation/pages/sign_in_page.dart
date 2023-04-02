@@ -10,7 +10,7 @@ import 'package:itsukaji_flutter/repositories/members_repository.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class SignInPage extends StatefulWidget {
-  const SignInPage({Key? key}) : super(key: key);
+  const SignInPage({final Key? key}) : super(key: key);
 
   @override
   State<SignInPage> createState() => _SignInPageState();
@@ -22,7 +22,7 @@ class _SignInPageState extends State<SignInPage> {
   bool _isSigningIn = false;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('itsukajiへようこそ'),
@@ -43,7 +43,7 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  Widget _buildSignInButton(BuildContext context) {
+  Widget _buildSignInButton(final BuildContext context) {
     return SignInButton(
       Buttons.Google,
       text: 'Googleでサインイン',
@@ -59,7 +59,7 @@ class _SignInPageState extends State<SignInPage> {
           if (!mounted) return;
 
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const TaskListPage()),
+            MaterialPageRoute(builder: (final context) => const TaskListPage()),
           );
         } on Exception catch (e) {
           print(e.toString());
@@ -82,7 +82,7 @@ class _SignInPageState extends State<SignInPage> {
     return FirebaseAuth.instance.signInWithCredential(credential);
   }
 
-  Widget _buildQRCodeScannerButton(BuildContext context) {
+  Widget _buildQRCodeScannerButton(final BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.white,
@@ -93,13 +93,13 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  _openQRCodeScanner(BuildContext context) async {
+  _openQRCodeScanner(final BuildContext context) async {
     showModalBottomSheet(
       context: context,
-      builder: (context) {
+      builder: (final context) {
         return MobileScanner(
           controller: MobileScannerController(facing: CameraFacing.back, torchEnabled: false),
-          onDetect: (barcode) async {
+          onDetect: (final barcode) async {
             try {
               if (barcode.raw == null) return;
 
@@ -119,8 +119,8 @@ class _SignInPageState extends State<SignInPage> {
               if (!mounted) return;
               showSnackBarWithText(context, '招待コードが無効です');
               Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => const TaskListPage()),
-                (_) => false,
+                MaterialPageRoute(builder: (final context) => const TaskListPage()),
+                (final _) => false,
               );
             } catch (e) {
               print(e.toString());
