@@ -16,9 +16,7 @@ class Task with _$Task {
     required DateTime createdAt,
   }) = _Task;
 
-  factory Task.fromFirestore(
-    final QueryDocumentSnapshot<Map<String, dynamic>> snapshot,
-  ) {
+  factory Task.fromFirestore(final QueryDocumentSnapshot<Map<String, dynamic>> snapshot) {
     final data = snapshot.data();
     return Task(
       id: snapshot.id,
@@ -37,17 +35,19 @@ class Task with _$Task {
         "createdAt": createdAt,
       };
 
-  int daysUntilNext() {
-    final nextDate = lastDoneDate.add(Duration(days: intervalDays));
-    final now = DateTime.now();
-    return nextDate.difference(now).inDays + 1;
+  int get daysUntilNext {
+    final nextDate = midnight(lastDoneDate.add(Duration(days: intervalDays)));
+    final now = midnight(DateTime.now());
+    return nextDate.difference(now).inDays;
   }
 
-  String lastDoneDateFormatted() {
-    return dateFormatSlashString(lastDoneDate);
-  }
+  String get lastDoneDateFormatted => dateFormatSlashString(lastDoneDate);
 
-  bool get isDueToday => daysUntilNext() <= 0;
+  bool get isOverdue => daysUntilNext < 0;
 
-  bool get isDueTomorrow => daysUntilNext() == 1;
+  int get daysOverdue => -daysUntilNext;
+
+  bool get isDueToday => daysUntilNext <= 0;
+
+  bool get isDueTomorrow => daysUntilNext == 1;
 }

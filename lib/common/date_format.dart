@@ -10,3 +10,7 @@ String dateFormatSlashString(final DateTime date) {
 String dateFormatJpString(final DateTime date) {
   return dateFormatJp.format(date);
 }
+
+DateTime midnight(final DateTime date) {
+  return DateTime(date.year, date.month, date.day);
+}

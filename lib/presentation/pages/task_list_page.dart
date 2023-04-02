@@ -120,7 +120,7 @@ class _TaskListPageState extends State<TaskListPage> {
   }
 
   List<Task> _sortTasksByDaysUntilNext(final List<Task> taskList) {
-    taskList.sort((final taskA, final taskB) => taskA.daysUntilNext().compareTo(taskB.daysUntilNext()));
+    taskList.sort((final taskA, final taskB) => taskA.daysUntilNext.compareTo(taskB.daysUntilNext));
     return taskList;
   }
 

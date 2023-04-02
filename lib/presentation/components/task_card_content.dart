@@ -18,7 +18,7 @@ class TaskCardContent extends StatelessWidget {
           const SizedBox(height: 8),
           _buildTaskName(task.name),
           const SizedBox(height: 8),
-          _buildCardFooter(daysUntilNext: task.daysUntilNext(), lastDoneDate: task.lastDoneDateFormatted()),
+          _buildCardFooter(task),
         ],
       ),
     );
@@ -44,17 +44,18 @@ class TaskCardContent extends StatelessWidget {
     );
   }
 
-  Row _buildCardFooter({required final int daysUntilNext, required final String lastDoneDate}) {
+  Row _buildCardFooter(final Task task) {
+    final dueDayLabel = task.isOverdue ? '${task.daysOverdue} 日放置中' : 'あと${task.daysUntilNext} 日';
     return Row(
       children: [
         const SizedBox(width: 16),
         _buildIcon('icon_bell_ring'),
         const SizedBox(width: 4),
-        Text('あと$daysUntilNext 日', style: const TextStyle(fontSize: 14)),
+        Text(dueDayLabel, style: const TextStyle(fontSize: 14)),
         const SizedBox(width: 16),
         _buildIcon('icon_calendar_check'),
         const SizedBox(width: 4),
-        Text('前回 $lastDoneDate', style: const TextStyle(fontSize: 14)),
+        Text('前回 ${task.lastDoneDateFormatted}', style: const TextStyle(fontSize: 14)),
       ],
     );
   }
