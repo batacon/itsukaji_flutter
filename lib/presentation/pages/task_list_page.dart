@@ -47,28 +47,25 @@ class _TaskListPageState extends State<TaskListPage> {
   }
 
   Widget _buildBody(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 16, right: 16, bottom: 52, left: 16),
-      child: FutureBuilder(
-        future: MembersRepository().getCurrentMember(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final currentMember = snapshot.data as Member;
-            return StreamBuilder<List<Task>>(
-              stream: _tasksRepository.getTasks(currentMember),
-              builder: (context, AsyncSnapshot<List<Task>> taskListSnapshot) {
-                if (taskListSnapshot.hasData && taskListSnapshot.data!.isNotEmpty) {
-                  return _buildTaskList(taskListSnapshot.data!);
-                } else {
-                  return const Center(child: Text('家事を作ろう'));
-                }
-              },
-            );
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
-      ),
+    return FutureBuilder(
+      future: MembersRepository().getCurrentMember(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final currentMember = snapshot.data as Member;
+          return StreamBuilder<List<Task>>(
+            stream: _tasksRepository.getTasks(currentMember),
+            builder: (context, AsyncSnapshot<List<Task>> taskListSnapshot) {
+              if (taskListSnapshot.hasData && taskListSnapshot.data!.isNotEmpty) {
+                return _buildTaskList(taskListSnapshot.data!);
+              } else {
+                return const Center(child: Text('家事を作ろう'));
+              }
+            },
+          );
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
     );
   }
 
@@ -76,13 +73,17 @@ class _TaskListPageState extends State<TaskListPage> {
     final filteredTaskList =
         _searchWord.isEmpty ? taskList : taskList.where((task) => task.name.contains(_searchWord)).toList();
     final sortedTaskList = _sortTasksByDaysUntilNext(filteredTaskList);
-    return ListView(
-      shrinkWrap: true,
-      children: [
-        _buildSearchField(),
-        const SizedBox(height: 20),
-        ..._buildCardList(sortedTaskList),
-      ],
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 52),
+        child: Column(
+          children: [
+            _buildSearchField(),
+            const SizedBox(height: 20),
+            ..._buildCardList(sortedTaskList),
+          ],
+        ),
+      ),
     );
   }
 
