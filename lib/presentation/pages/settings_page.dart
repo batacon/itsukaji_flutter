@@ -96,6 +96,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 TextButton(
                   onPressed: () async {
                     await _deleteAccount();
+                    if (!mounted) return;
                     _signOut(context);
                   },
                   child: const Text('本当に削除'),

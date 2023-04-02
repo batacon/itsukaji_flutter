@@ -98,14 +98,13 @@ class _SignInPageState extends State<SignInPage> {
       context: context,
       builder: (context) {
         return MobileScanner(
-          allowDuplicates: false,
           controller: MobileScannerController(facing: CameraFacing.back, torchEnabled: false),
-          onDetect: (barcode, args) async {
+          onDetect: (barcode) async {
             try {
-              if (barcode.rawValue == null) return;
+              if (barcode.raw == null) return;
 
               final firebaseUser = (await signInWithGoogle()).user!;
-              final invitedGroup = await _groupsRepository.getGroupByInvitationCode(barcode.rawValue!);
+              final invitedGroup = await _groupsRepository.getGroupByInvitationCode(barcode.raw!);
               if (invitedGroup == null) {
                 if (!mounted) return;
                 return showSnackBarWithText(context, '招待コードが無効です');
