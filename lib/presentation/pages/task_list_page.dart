@@ -34,7 +34,7 @@ class _TaskListPageState extends State<TaskListPage> {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (final context) => const SettingsPage(),
+                  builder: (context) => const SettingsPage(),
                 ),
               );
             },
@@ -49,7 +49,7 @@ class _TaskListPageState extends State<TaskListPage> {
   Widget _buildBody(final BuildContext context) {
     return FutureBuilder(
       future: MembersRepository().getCurrentMember(),
-      builder: (final context, final snapshot) {
+      builder: (context, snapshot) {
         if (snapshot.hasData) {
           final currentMember = snapshot.data as Member;
           return StreamBuilder<List<Task>>(
@@ -71,7 +71,7 @@ class _TaskListPageState extends State<TaskListPage> {
 
   Widget _buildTaskList(final List<Task> taskList) {
     final filteredTaskList =
-        _searchWord.isEmpty ? taskList : taskList.where((final task) => task.name.contains(_searchWord)).toList();
+        _searchWord.isEmpty ? taskList : taskList.where((task) => task.name.contains(_searchWord)).toList();
     final sortedTaskList = _sortTasksByDaysUntilNext(filteredTaskList);
     return SingleChildScrollView(
       child: Padding(
@@ -106,28 +106,28 @@ class _TaskListPageState extends State<TaskListPage> {
           icon: const Icon(Icons.clear),
         ),
       ),
-      onChanged: (final value) => setState(() => _searchWord = value),
+      onChanged: (value) => setState(() => _searchWord = value),
     );
   }
 
   List<Widget> _buildCardList(final List<Task> taskList) {
-    return taskList.map((final task) {
+    return taskList.map((task) {
       return Padding(
-        padding: const EdgeInsets.only(bottom: 4.0),
+        padding: const EdgeInsets.only(bottom: 16),
         child: TaskCard(task),
       );
     }).toList();
   }
 
   List<Task> _sortTasksByDaysUntilNext(final List<Task> taskList) {
-    taskList.sort((final taskA, final taskB) => taskA.daysUntilNext.compareTo(taskB.daysUntilNext));
+    taskList.sort((taskA, taskB) => taskA.daysUntilNext.compareTo(taskB.daysUntilNext));
     return taskList;
   }
 
   FloatingActionButton _buildCreateTaskButton(final BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (final context) {
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
           return const CreateTaskPage();
         }));
       },

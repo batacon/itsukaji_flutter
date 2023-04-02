@@ -52,14 +52,14 @@ class _TaskEditFormState extends State<TaskEditForm> {
               key: _taskNameFormFieldKey,
               initialValue: _taskName,
               decoration: const InputDecoration(
-                hintText: '新しいタスク名を入力（20文字まで）',
+                hintText: '新しいタスク名を入力（30文字まで）',
               ),
               validator: (final value) {
                 if (value == null || value.isEmpty || value.trim() == '') {
                   return 'タスク名を入力してください';
                 }
-                if (value.length > 20) {
-                  return 'タスク名は20文字以内で入力してください';
+                if (value.length > 30) {
+                  return 'タスク名は30文字以内で入力してください';
                 }
                 return null;
               },

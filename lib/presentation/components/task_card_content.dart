@@ -11,25 +11,36 @@ class TaskCardContent extends StatelessWidget {
   Widget build(final BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildCardHeader(context, task.intervalDays),
-          const SizedBox(height: 8),
-          _buildTaskName(context, task.name),
-          const SizedBox(height: 8),
-          _buildCardFooter(context, task),
-        ],
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 96),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildCardHeader(context, task.intervalDays),
+            const SizedBox(height: 8),
+            _buildTaskName(context, task.name),
+            const SizedBox(height: 8),
+            _buildCardFooter(context, task),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildCardHeader(final BuildContext context, final int intervalDays) {
-    return Text('every $intervalDays days', style: Theme.of(context).textTheme.titleSmall);
+    return Text(
+      'every $intervalDays days',
+      style: Theme.of(context).textTheme.titleSmall,
+    );
   }
 
   Widget _buildTaskName(final BuildContext context, final String name) {
-    return Text(name, style: Theme.of(context).textTheme.displayMedium);
+    return Text(
+      name,
+      style: Theme.of(context).textTheme.displayMedium,
+      overflow: TextOverflow.ellipsis,
+      maxLines: 1,
+    );
   }
 
   Row _buildCardFooter(final BuildContext context, final Task task) {

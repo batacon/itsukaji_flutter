@@ -11,7 +11,7 @@ class TaskCardEdge extends StatelessWidget {
   Widget build(final BuildContext context) {
     return Container(
       width: 24,
-      height: 92,
+      height: 98,
       color: _cardEdgeColor(task),
     );
   }
