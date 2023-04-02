@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:itsukaji_flutter/common/custom_color.dart';
 import 'package:itsukaji_flutter/models/task.dart';
 import 'package:itsukaji_flutter/presentation/components/task_card_content.dart';
 import 'package:itsukaji_flutter/presentation/components/task_card_edge.dart';
@@ -24,7 +25,7 @@ class TaskCard extends StatelessWidget {
         direction: DismissDirection.endToStart,
         onDismissed: (direction) {
           TasksRepository().setTaskDone(task).then(
-                (final value) => ScaffoldMessenger.of(context).showSnackBar(
+                (_) => ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Good Job!'),
                   ),
@@ -34,6 +35,9 @@ class TaskCard extends StatelessWidget {
         child: Card(
           elevation: 2,
           color: _cardColor(task),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(0),
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -48,11 +52,11 @@ class TaskCard extends StatelessWidget {
 
   Color _cardColor(final Task thisTask) {
     if (thisTask.isDueToday) {
-      return const Color(0xFFFDF5F9);
+      return CustomColor.dueToday;
     } else if (thisTask.isDueTomorrow) {
-      return const Color(0xFFFFFEF1);
+      return CustomColor.dueTomorrow;
     } else {
-      return const Color(0xFFF3F9FD);
+      return CustomColor.dueLater;
     }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:itsukaji_flutter/common/custom_color.dart';
 import 'package:itsukaji_flutter/models/task.dart';
 
 class TaskCardEdge extends StatelessWidget {
@@ -17,11 +18,11 @@ class TaskCardEdge extends StatelessWidget {
 
   Color _cardEdgeColor(final Task thisTask) {
     if (thisTask.isDueToday) {
-      return const Color(0xFFF5BECF);
+      return CustomColor.dueTodayEdge;
     } else if (thisTask.isDueTomorrow) {
-      return const Color(0xFFFFF7A0);
+      return CustomColor.dueTomorrowEdge;
     } else {
-      return const Color(0xFFBBE2F1);
+      return CustomColor.dueLaterEdge;
     }
   }
 }

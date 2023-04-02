@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:itsukaji_flutter/common/custom_color.dart';
 import 'package:itsukaji_flutter/common/date_format.dart';
 import 'package:itsukaji_flutter/models/task.dart';
 import 'package:itsukaji_flutter/repositories/tasks_repository.dart';
@@ -74,7 +75,7 @@ class _TaskEditFormState extends State<TaskEditForm> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('間隔(1~999日)', style: TextStyle(fontSize: 16)),
+                  Text('間隔(1~999日)', style: Theme.of(context).textTheme.bodyMedium),
                   Row(
                     children: [
                       SizedBox(
@@ -107,7 +108,7 @@ class _TaskEditFormState extends State<TaskEditForm> {
                           },
                         ),
                       ),
-                      const Text('日ごと', style: TextStyle(fontSize: 16)),
+                      Text('日ごと', style: Theme.of(context).textTheme.bodyMedium),
                     ],
                   )
                 ],
@@ -118,7 +119,7 @@ class _TaskEditFormState extends State<TaskEditForm> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('前回やった日', style: TextStyle(fontSize: 16)),
+                  Text('前回やった日', style: Theme.of(context).textTheme.bodyMedium),
                   Row(
                     children: [
                       _buildLastDoneDate(),
@@ -232,7 +233,7 @@ class _TaskEditFormState extends State<TaskEditForm> {
 
   Widget _buildSubmitButton(final BuildContext context) {
     return IconButton(
-      icon: const Icon(Icons.check, color: Colors.blue, size: 32),
+      icon: const Icon(Icons.check, color: CustomColor.primary, size: 32),
       onPressed: () {
         if (_formKey.currentState!.validate()) {
           ScaffoldMessenger.of(context).showSnackBar(

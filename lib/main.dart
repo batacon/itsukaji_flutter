@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:itsukaji_flutter/common/custom_theme.dart';
 import 'package:itsukaji_flutter/common/firebase_options.dart';
 import 'package:itsukaji_flutter/presentation/pages/sign_in_page.dart';
 import 'package:itsukaji_flutter/presentation/pages/task_list_page.dart';
@@ -19,10 +20,7 @@ class MainApp extends StatelessWidget {
   Widget build(final BuildContext context) {
     return MaterialApp(
       title: 'itsukaji',
-      theme: ThemeData(
-        // TODO: オリジナルのカラーパレットを使う
-        primarySwatch: Colors.blue,
-      ),
+      theme: customTheme,
       home: FirebaseAuth.instance.currentUser == null ? const SignInPage() : const TaskListPage(),
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,

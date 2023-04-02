@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:itsukaji_flutter/common/custom_color.dart';
 import 'package:itsukaji_flutter/common/show_snack_bar_with_text.dart';
 import 'package:itsukaji_flutter/presentation/pages/task_list_page.dart';
 import 'package:itsukaji_flutter/repositories/groups_repository.dart';
@@ -86,7 +87,7 @@ class _SignInPageState extends State<SignInPage> {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.white,
-        foregroundColor: Colors.blue,
+        foregroundColor: CustomColor.primary,
       ),
       onPressed: () => _openQRCodeScanner(context),
       child: const Text('QRコードで招待してもらう'),

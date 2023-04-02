@@ -132,7 +132,7 @@ class _TaskListPageState extends State<TaskListPage> {
         }));
       },
       tooltip: 'Create New Task',
-      child: const Icon(Icons.add),
+      child: const Icon(Icons.add, color: Colors.white),
     );
   }
 }
