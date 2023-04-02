@@ -6,7 +6,7 @@ import 'package:itsukaji_flutter/common/show_snack_bar_with_text.dart';
 import 'package:itsukaji_flutter/repositories/tasks_repository.dart';
 
 class TaskCreateForm extends StatefulWidget {
-  const TaskCreateForm({final Key? key}) : super(key: key);
+  const TaskCreateForm({super.key});
 
   @override
   State<TaskCreateForm> createState() => _TaskCreateFormState();

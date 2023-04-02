@@ -6,7 +6,7 @@ import 'package:itsukaji_flutter/presentation/pages/edit_task_page.dart';
 import 'package:itsukaji_flutter/repositories/tasks_repository.dart';
 
 class TaskCard extends StatelessWidget {
-  const TaskCard({required this.task, final Key? key}) : super(key: key);
+  const TaskCard(this.task, {super.key});
 
   final Task task;
 
@@ -15,14 +15,14 @@ class TaskCard extends StatelessWidget {
     // TODO: カードの裏側にGood Jobアイコンを隠しておく。スライドした時に見えるようにし、カードが消えると同時に消える。
     return InkWell(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (final context) {
-          return EditTaskPage(task: task);
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          return EditTaskPage(task);
         }));
       },
       child: Dismissible(
         key: UniqueKey(),
         direction: DismissDirection.endToStart,
-        onDismissed: (final direction) {
+        onDismissed: (direction) {
           TasksRepository().setTaskDone(task).then(
                 (final value) => ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
@@ -37,8 +37,8 @@ class TaskCard extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              TaskCardContent(task: task),
-              TaskCardEdge(task: task),
+              TaskCardContent(task),
+              TaskCardEdge(task),
             ],
           ),
         ),

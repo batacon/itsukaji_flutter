@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:itsukaji_flutter/models/task.dart';
 
 class TaskCardEdge extends StatelessWidget {
-  const TaskCardEdge({required this.task, final Key? key}) : super(key: key);
+  const TaskCardEdge(this.task, {super.key});
 
   final Task task;
 

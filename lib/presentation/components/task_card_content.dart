@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:itsukaji_flutter/models/task.dart';
 
 class TaskCardContent extends StatelessWidget {
-  const TaskCardContent({required this.task, final Key? key}) : super(key: key);
+  const TaskCardContent(this.task, {super.key});
 
   final Task task;
 

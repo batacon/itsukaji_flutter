@@ -114,7 +114,7 @@ class _TaskListPageState extends State<TaskListPage> {
     return taskList.map((final task) {
       return Padding(
         padding: const EdgeInsets.only(bottom: 4.0),
-        child: TaskCard(task: task),
+        child: TaskCard(task),
       );
     }).toList();
   }

@@ -6,7 +6,7 @@ import 'package:itsukaji_flutter/models/task.dart';
 import 'package:itsukaji_flutter/repositories/tasks_repository.dart';
 
 class TaskEditForm extends StatefulWidget {
-  const TaskEditForm({required this.task, final Key? key}) : super(key: key);
+  const TaskEditForm(this.task, {super.key});
 
   final Task task;
 

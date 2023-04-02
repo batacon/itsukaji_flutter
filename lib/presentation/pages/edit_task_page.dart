@@ -3,7 +3,7 @@ import 'package:itsukaji_flutter/models/task.dart';
 import 'package:itsukaji_flutter/presentation/components/task_edit_form.dart';
 
 class EditTaskPage extends StatelessWidget {
-  const EditTaskPage({required this.task, final Key? key}) : super(key: key);
+  const EditTaskPage(this.task, {super.key});
 
   final Task task;
 
@@ -17,7 +17,7 @@ class EditTaskPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          TaskEditForm(task: task),
+          TaskEditForm(task),
         ],
       ),
     );
