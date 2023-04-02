@@ -1,20 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:itsukaji_flutter/common/date_format.dart';
 
-class Task {
-  Task({
-    required this.id,
-    required this.name,
-    required this.intervalDays,
-    required this.lastDoneDate,
-    required this.createdAt,
-  });
+part 'task.freezed.dart';
 
-  final String id;
-  final String name;
-  final int intervalDays;
-  final DateTime lastDoneDate;
-  final DateTime createdAt;
+@freezed
+class Task with _$Task {
+  const Task._();
+
+  const factory Task({
+    required String id,
+    required String name,
+    required int intervalDays,
+    required DateTime lastDoneDate,
+    required DateTime createdAt,
+  }) = _Task;
 
   factory Task.fromFirestore(
     final QueryDocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -47,11 +47,7 @@ class Task {
     return dateFormatSlashString(lastDoneDate);
   }
 
-  bool isDueToday() {
-    return daysUntilNext() <= 0;
-  }
+  bool get isDueToday => daysUntilNext() <= 0;
 
-  bool isDueTomorrow() {
-    return daysUntilNext() == 1;
-  }
+  bool get isDueTomorrow => daysUntilNext() == 1;
 }

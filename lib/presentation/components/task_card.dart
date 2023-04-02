@@ -47,9 +47,9 @@ class TaskCard extends StatelessWidget {
   }
 
   Color _cardColor(final Task thisTask) {
-    if (thisTask.isDueToday()) {
+    if (thisTask.isDueToday) {
       return const Color(0xFFFDF5F9);
-    } else if (thisTask.isDueTomorrow()) {
+    } else if (thisTask.isDueTomorrow) {
       return const Color(0xFFFFFEF1);
     } else {
       return const Color(0xFFF3F9FD);

@@ -32,6 +32,7 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^2.0.0
   freezed: ^2.3.2
+  build_runner: ^2.3.3
 
 flutter_icons:
   image_path: "assets/app_icons/app_icon.png"

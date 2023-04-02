@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class Group {
-  final String id;
-  final String invitationCode;
+part 'group.freezed.dart';
 
-  Group({
-    required this.id,
-    required this.invitationCode,
-  });
+@freezed
+class Group with _$Group {
+  const factory Group({
+    required String id,
+    required String invitationCode,
+  }) = _Group;
 
   factory Group.fromFirestore(final DocumentSnapshot document) {
     final data = document.data() as Map<String, dynamic>;
