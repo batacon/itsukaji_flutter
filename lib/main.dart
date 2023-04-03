@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:itsukaji_flutter/common/custom_theme.dart';
 import 'package:itsukaji_flutter/common/firebase_options.dart';
+import 'package:itsukaji_flutter/presentation/main_page.dart';
 import 'package:itsukaji_flutter/presentation/pages/sign_in_page.dart';
-import 'package:itsukaji_flutter/presentation/pages/task_list_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +21,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       title: 'itsukaji',
       theme: customTheme,
-      home: FirebaseAuth.instance.currentUser == null ? const SignInPage() : const TaskListPage(),
+      home: FirebaseAuth.instance.currentUser == null ? const SignInPage() : const MainPage(),
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

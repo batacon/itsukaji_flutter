@@ -1,22 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:itsukaji_flutter/models/group.dart';
 import 'package:itsukaji_flutter/presentation/pages/sign_in_page.dart';
 import 'package:itsukaji_flutter/repositories/groups_repository.dart';
 import 'package:itsukaji_flutter/repositories/members_repository.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 
-class SettingsPage extends StatefulWidget {
-  const SettingsPage({final Key? key}) : super(key: key);
-
-  @override
-  State<SettingsPage> createState() => _SettingsPageState();
-}
-
-class _SettingsPageState extends State<SettingsPage> {
-  final _groupsRepository = GroupsRepository();
-  final _membersRepository = MembersRepository();
+class SettingsPage extends StatelessWidget {
+  const SettingsPage({super.key});
 
   @override
   Widget build(final BuildContext context) {
@@ -29,31 +19,9 @@ class _SettingsPageState extends State<SettingsPage> {
         padding: const EdgeInsets.all(16),
         child: ListView(
           children: [
-            FutureBuilder(
-              future: _groupsRepository.getCurrentGroup(),
-              builder: (final context, final snapshot) {
-                if (snapshot.hasData) {
-                  final group = snapshot.data as Group;
-                  return Center(
-                    child: Column(
-                      children: [
-                        const Text('グループコード'),
-                        QrImage(
-                          data: group.invitationCode,
-                          version: QrVersions.auto,
-                          size: 200.0,
-                        ),
-                      ],
-                    ),
-                  );
-                } else {
-                  return const CircularProgressIndicator();
-                }
-              },
-            ),
             const SizedBox(height: 20),
             _buildSignOutButton(context),
-            const SizedBox(height: 600),
+            const SizedBox(height: 540),
             _buildDeleteAccountButton(context),
           ],
         ),
@@ -96,7 +64,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 TextButton(
                   onPressed: () async {
                     await _deleteAccount();
-                    if (!mounted) return;
                     _signOut(context);
                   },
                   child: const Text('本当に削除'),
@@ -117,6 +84,8 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Future<void> _deleteAccount() async {
+    final groupsRepository = GroupsRepository();
+    final membersRepository = MembersRepository();
     final currentUser = FirebaseAuth.instance.currentUser!;
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     if (googleUser == null) return;
@@ -127,12 +96,12 @@ class _SettingsPageState extends State<SettingsPage> {
       idToken: googleAuth.idToken,
     );
     await currentUser.reauthenticateWithCredential(googleCredential);
-    final group = await _groupsRepository.getCurrentGroup();
-    final groupMembers = await _membersRepository.getMembersOf(group.id);
+    final group = await groupsRepository.getCurrentGroup();
+    final groupMembers = await membersRepository.getMembersOf(group.id);
     if (groupMembers.length == 1) {
-      await _groupsRepository.deleteCurrentGroup();
+      await groupsRepository.deleteCurrentGroup();
     }
-    await _membersRepository.removeMember(currentUser.uid);
+    await membersRepository.removeMember(currentUser.uid);
     await currentUser.delete();
   }
 
