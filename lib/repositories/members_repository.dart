@@ -1,6 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:itsukaji_flutter/common/firebase_firestore.dart';
 import 'package:itsukaji_flutter/models/member.dart';
+
+final membersRepositoryProvider = Provider.autoDispose<MembersRepository>((ref) {
+  return MembersRepository();
+});
 
 class MembersRepository {
   Future<Member> getCurrentMember() async {

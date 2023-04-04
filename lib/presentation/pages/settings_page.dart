@@ -12,7 +12,7 @@ class SettingsPage extends StatelessWidget {
   Widget build(final BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('グループ設定'),
+        title: const Text('設定'),
         centerTitle: true,
       ),
       body: Padding(
