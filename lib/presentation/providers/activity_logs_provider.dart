@@ -1,52 +1,35 @@
+import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:itsukaji_flutter/models/activity_log.dart';
 import 'package:itsukaji_flutter/models/activity_type.dart';
-import 'package:itsukaji_flutter/models/member.dart';
 import 'package:itsukaji_flutter/models/task.dart';
-import 'package:itsukaji_flutter/presentation/providers/me_provider.dart';
+import 'package:itsukaji_flutter/repositories/activity_logs_repository.dart';
 
 final activityLogsProvider = StateNotifierProvider.autoDispose<ActivityLogsProvider, List<ActivityLog>>((ref) {
   return ActivityLogsProvider(
-    ref.watch(meProvider),
+    ref.watch(activityLogsRepositoryProvider),
   );
 });
 
 class ActivityLogsProvider extends StateNotifier<List<ActivityLog>> {
-  final Member me;
+  final ActivityLogsRepository _activityLogsRepository;
 
   ActivityLogsProvider(
-    this.me,
-  ) : super([]);
-
-  void doneTaskActivityLog(final Task task) {
-    state = [
-      ...state,
-      ActivityLog(
-        taskId: task.id,
-        memberId: me.id,
-        type: ActivityType.done,
-        date: DateTime.now(),
-      )
-    ];
+    this._activityLogsRepository,
+  ) : super([]) {
+    _init();
   }
 
-  void addActivityLog(final ActivityLog activityLog) {
-    state = [...state, activityLog];
+  Map<String, List<ActivityLog>> get activityLogsByDate {
+    return groupBy(state, (ActivityLog activityLog) => activityLog.formattedDate);
   }
 
-  void removeActivityLog(final ActivityLog activityLog) {
-    state = state.where((log) => log != activityLog).toList();
+  Future<void> addActivityLog(final Task task, final ActivityType type) async {
+    final newActivityLog = await _activityLogsRepository.addActivityLog(task, type);
+    state = [...state, newActivityLog];
   }
 
-  void updateActivityLog(final ActivityLog activityLog) {
-    state = state.map((log) => log == activityLog ? activityLog : log).toList();
-  }
-
-  void clearActivityLogs() {
-    state = [];
-  }
-
-  void setActivityLogs(final List<ActivityLog> activityLogs) {
-    state = activityLogs;
+  Future<void> _init() async {
+    state = await _activityLogsRepository.getActivityLogs();
   }
 }

@@ -1,7 +1,12 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:itsukaji_flutter/common/firebase_firestore.dart';
 import 'package:itsukaji_flutter/models/member.dart';
 import 'package:itsukaji_flutter/models/task.dart';
 import 'package:itsukaji_flutter/repositories/members_repository.dart';
+
+final tasksRepositoryProvider = Provider.autoDispose<TasksRepository>((ref) {
+  return TasksRepository();
+});
 
 class TasksRepository {
   Stream<List<Task>> getTasks(final Member currentMember) {

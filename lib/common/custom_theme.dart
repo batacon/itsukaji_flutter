@@ -27,9 +27,9 @@ const MaterialColor _customSwatch = MaterialColor(
 );
 
 TextTheme _customTextTheme = const TextTheme(
-  displayLarge: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: CustomColor.text),
-  displayMedium: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: CustomColor.text),
-  displaySmall: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: CustomColor.text),
+  displayLarge: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: CustomColor.text),
+  displayMedium: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: CustomColor.text),
+  displaySmall: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: CustomColor.text),
   bodyLarge: TextStyle(fontSize: 18, color: CustomColor.text),
   bodyMedium: TextStyle(fontSize: 16, color: CustomColor.text),
   bodySmall: TextStyle(fontSize: 14, color: CustomColor.text),

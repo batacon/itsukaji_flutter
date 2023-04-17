@@ -21,7 +21,9 @@ ActivityLog _$ActivityLogFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ActivityLog {
   String get taskId => throw _privateConstructorUsedError;
+  String get taskName => throw _privateConstructorUsedError;
   String get memberId => throw _privateConstructorUsedError;
+  String get memberName => throw _privateConstructorUsedError;
   ActivityType get type => throw _privateConstructorUsedError;
   DateTime get date => throw _privateConstructorUsedError;
 
@@ -37,7 +39,13 @@ abstract class $ActivityLogCopyWith<$Res> {
           ActivityLog value, $Res Function(ActivityLog) then) =
       _$ActivityLogCopyWithImpl<$Res, ActivityLog>;
   @useResult
-  $Res call({String taskId, String memberId, ActivityType type, DateTime date});
+  $Res call(
+      {String taskId,
+      String taskName,
+      String memberId,
+      String memberName,
+      ActivityType type,
+      DateTime date});
 }
 
 /// @nodoc
@@ -54,7 +62,9 @@ class _$ActivityLogCopyWithImpl<$Res, $Val extends ActivityLog>
   @override
   $Res call({
     Object? taskId = null,
+    Object? taskName = null,
     Object? memberId = null,
+    Object? memberName = null,
     Object? type = null,
     Object? date = null,
   }) {
@@ -63,9 +73,17 @@ class _$ActivityLogCopyWithImpl<$Res, $Val extends ActivityLog>
           ? _value.taskId
           : taskId // ignore: cast_nullable_to_non_nullable
               as String,
+      taskName: null == taskName
+          ? _value.taskName
+          : taskName // ignore: cast_nullable_to_non_nullable
+              as String,
       memberId: null == memberId
           ? _value.memberId
           : memberId // ignore: cast_nullable_to_non_nullable
+              as String,
+      memberName: null == memberName
+          ? _value.memberName
+          : memberName // ignore: cast_nullable_to_non_nullable
               as String,
       type: null == type
           ? _value.type
@@ -87,7 +105,13 @@ abstract class _$$_ActivityLogCopyWith<$Res>
       __$$_ActivityLogCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String taskId, String memberId, ActivityType type, DateTime date});
+  $Res call(
+      {String taskId,
+      String taskName,
+      String memberId,
+      String memberName,
+      ActivityType type,
+      DateTime date});
 }
 
 /// @nodoc
@@ -102,7 +126,9 @@ class __$$_ActivityLogCopyWithImpl<$Res>
   @override
   $Res call({
     Object? taskId = null,
+    Object? taskName = null,
     Object? memberId = null,
+    Object? memberName = null,
     Object? type = null,
     Object? date = null,
   }) {
@@ -111,9 +137,17 @@ class __$$_ActivityLogCopyWithImpl<$Res>
           ? _value.taskId
           : taskId // ignore: cast_nullable_to_non_nullable
               as String,
+      taskName: null == taskName
+          ? _value.taskName
+          : taskName // ignore: cast_nullable_to_non_nullable
+              as String,
       memberId: null == memberId
           ? _value.memberId
           : memberId // ignore: cast_nullable_to_non_nullable
+              as String,
+      memberName: null == memberName
+          ? _value.memberName
+          : memberName // ignore: cast_nullable_to_non_nullable
               as String,
       type: null == type
           ? _value.type
@@ -129,12 +163,15 @@ class __$$_ActivityLogCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ActivityLog implements _ActivityLog {
+class _$_ActivityLog extends _ActivityLog {
   _$_ActivityLog(
       {required this.taskId,
+      required this.taskName,
       required this.memberId,
+      required this.memberName,
       required this.type,
-      required this.date});
+      required this.date})
+      : super._();
 
   factory _$_ActivityLog.fromJson(Map<String, dynamic> json) =>
       _$$_ActivityLogFromJson(json);
@@ -142,7 +179,11 @@ class _$_ActivityLog implements _ActivityLog {
   @override
   final String taskId;
   @override
+  final String taskName;
+  @override
   final String memberId;
+  @override
+  final String memberName;
   @override
   final ActivityType type;
   @override
@@ -150,7 +191,7 @@ class _$_ActivityLog implements _ActivityLog {
 
   @override
   String toString() {
-    return 'ActivityLog(taskId: $taskId, memberId: $memberId, type: $type, date: $date)';
+    return 'ActivityLog(taskId: $taskId, taskName: $taskName, memberId: $memberId, memberName: $memberName, type: $type, date: $date)';
   }
 
   @override
@@ -159,15 +200,20 @@ class _$_ActivityLog implements _ActivityLog {
         (other.runtimeType == runtimeType &&
             other is _$_ActivityLog &&
             (identical(other.taskId, taskId) || other.taskId == taskId) &&
+            (identical(other.taskName, taskName) ||
+                other.taskName == taskName) &&
             (identical(other.memberId, memberId) ||
                 other.memberId == memberId) &&
+            (identical(other.memberName, memberName) ||
+                other.memberName == memberName) &&
             (identical(other.type, type) || other.type == type) &&
             (identical(other.date, date) || other.date == date));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, taskId, memberId, type, date);
+  int get hashCode => Object.hash(
+      runtimeType, taskId, taskName, memberId, memberName, type, date);
 
   @JsonKey(ignore: true)
   @override
@@ -183,12 +229,15 @@ class _$_ActivityLog implements _ActivityLog {
   }
 }
 
-abstract class _ActivityLog implements ActivityLog {
+abstract class _ActivityLog extends ActivityLog {
   factory _ActivityLog(
       {required final String taskId,
+      required final String taskName,
       required final String memberId,
+      required final String memberName,
       required final ActivityType type,
       required final DateTime date}) = _$_ActivityLog;
+  _ActivityLog._() : super._();
 
   factory _ActivityLog.fromJson(Map<String, dynamic> json) =
       _$_ActivityLog.fromJson;
@@ -196,7 +245,11 @@ abstract class _ActivityLog implements ActivityLog {
   @override
   String get taskId;
   @override
+  String get taskName;
+  @override
   String get memberId;
+  @override
+  String get memberName;
   @override
   ActivityType get type;
   @override

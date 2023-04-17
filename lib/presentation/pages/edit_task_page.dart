@@ -11,7 +11,7 @@ class EditTaskPage extends StatelessWidget {
   Widget build(final BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit New Task'),
+        title: const Text('Edit Task'),
         centerTitle: true,
         elevation: 0,
       ),

@@ -8,9 +8,14 @@ final membersRepositoryProvider = Provider.autoDispose<MembersRepository>((ref) 
 });
 
 class MembersRepository {
+  Member? currentMember;
+
   Future<Member> getCurrentMember() async {
+    if (currentMember != null) return currentMember!;
+
     final document = await db.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).get();
-    return Member.fromFirestore(document);
+    currentMember = Member.fromFirestore(document);
+    return currentMember!;
   }
 
   Future<Member?> findMemberById(final String id) async {
