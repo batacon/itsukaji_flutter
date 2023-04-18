@@ -5,7 +5,7 @@ import 'package:flutter_signin_button/button_view.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:itsukaji_flutter/common/custom_color.dart';
 import 'package:itsukaji_flutter/common/show_snack_bar_with_text.dart';
-import 'package:itsukaji_flutter/presentation/pages/task_list_page.dart';
+import 'package:itsukaji_flutter/presentation/pages/main_page.dart';
 import 'package:itsukaji_flutter/repositories/groups_repository.dart';
 import 'package:itsukaji_flutter/repositories/members_repository.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -60,7 +60,7 @@ class _SignInPageState extends State<SignInPage> {
           if (!mounted) return;
 
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (final context) => const TaskListPage()),
+            MaterialPageRoute(builder: (final context) => const MainPage()),
           );
         } on Exception catch (e) {
           print(e.toString());
@@ -120,7 +120,7 @@ class _SignInPageState extends State<SignInPage> {
               if (!mounted) return;
               showSnackBarWithText(context, '招待コードが無効です');
               Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (final context) => const TaskListPage()),
+                MaterialPageRoute(builder: (final context) => const MainPage()),
                 (final _) => false,
               );
             } catch (e) {
