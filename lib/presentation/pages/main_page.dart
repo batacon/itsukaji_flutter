@@ -39,7 +39,7 @@ class _MainPageState extends State<MainPage> {
           label: '',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.list),
+          icon: Icon(Icons.history),
           label: '',
         ),
         BottomNavigationBarItem(
