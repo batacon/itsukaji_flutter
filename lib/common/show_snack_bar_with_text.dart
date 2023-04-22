@@ -4,10 +4,7 @@ showSnackBarWithText(final BuildContext context, final String snackBarText) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       backgroundColor: Colors.black,
-      content: Text(
-        snackBarText,
-        style: const TextStyle(color: Colors.redAccent, letterSpacing: 0.5),
-      ),
+      content: Text(snackBarText),
     ),
   );
 }

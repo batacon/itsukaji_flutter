@@ -1,15 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:itsukaji_flutter/presentation/pages/sign_in_page.dart';
 import 'package:itsukaji_flutter/repositories/groups_repository.dart';
 import 'package:itsukaji_flutter/repositories/members_repository.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
 
   @override
-  Widget build(final BuildContext context) {
+  Widget build(final BuildContext context, final WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('設定'),
@@ -22,7 +23,7 @@ class SettingsPage extends StatelessWidget {
             const SizedBox(height: 20),
             _buildSignOutButton(context),
             const SizedBox(height: 540),
-            _buildDeleteAccountButton(context),
+            _buildDeleteAccountButton(context, ref),
           ],
         ),
       ),
@@ -41,7 +42,7 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
-  ElevatedButton _buildDeleteAccountButton(final BuildContext context) {
+  ElevatedButton _buildDeleteAccountButton(final BuildContext context, final WidgetRef ref) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.red,
@@ -63,7 +64,7 @@ class SettingsPage extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () async {
-                    await _deleteAccount();
+                    await _deleteAccount(ref);
                     _signOut(context);
                   },
                   child: const Text('本当に削除'),
@@ -83,8 +84,8 @@ class SettingsPage extends StatelessWidget {
     await GoogleSignIn().disconnect();
   }
 
-  Future<void> _deleteAccount() async {
-    final groupsRepository = GroupsRepository();
+  Future<void> _deleteAccount(final WidgetRef ref) async {
+    final groupsRepository = ref.watch(groupsRepositoryProvider);
     final membersRepository = MembersRepository();
     final currentUser = FirebaseAuth.instance.currentUser!;
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -96,7 +97,7 @@ class SettingsPage extends StatelessWidget {
       idToken: googleAuth.idToken,
     );
     await currentUser.reauthenticateWithCredential(googleCredential);
-    final group = await groupsRepository.getCurrentGroup();
+    final group = await groupsRepository.fetchCurrentGroup();
     final groupMembers = await membersRepository.getMembersOf(group.id);
     if (groupMembers.length == 1) {
       await groupsRepository.deleteCurrentGroup();

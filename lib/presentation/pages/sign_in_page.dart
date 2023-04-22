@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -10,15 +11,14 @@ import 'package:itsukaji_flutter/repositories/groups_repository.dart';
 import 'package:itsukaji_flutter/repositories/members_repository.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
-class SignInPage extends StatefulWidget {
+class SignInPage extends ConsumerStatefulWidget {
   const SignInPage({final Key? key}) : super(key: key);
 
   @override
-  State<SignInPage> createState() => _SignInPageState();
+  ConsumerState<SignInPage> createState() => _SignInPageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
-  final _groupsRepository = GroupsRepository();
+class _SignInPageState extends ConsumerState<SignInPage> {
   final _membersRepository = MembersRepository();
   bool _isSigningIn = false;
 
@@ -54,7 +54,7 @@ class _SignInPageState extends State<SignInPage> {
           final firebaseUser = (await signInWithGoogle()).user!;
           final foundUser = await _membersRepository.findMemberById(firebaseUser.uid);
           if (foundUser == null) {
-            final newGroup = await _groupsRepository.createGroup();
+            final newGroup = await ref.watch(groupsRepositoryProvider).createGroup();
             await _membersRepository.createMember(firebaseUser, newGroup.id);
           }
           if (!mounted) return;
@@ -105,7 +105,7 @@ class _SignInPageState extends State<SignInPage> {
               if (barcode.raw == null) return;
 
               final firebaseUser = (await signInWithGoogle()).user!;
-              final invitedGroup = await _groupsRepository.getGroupByInvitationCode(barcode.raw!);
+              final invitedGroup = await ref.watch(groupsRepositoryProvider).getGroupByInvitationCode(barcode.raw!);
               if (invitedGroup == null) {
                 if (!mounted) return;
                 return showSnackBarWithText(context, '招待コードが無効です');
