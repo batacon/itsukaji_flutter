@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:itsukaji_flutter/common/show_snack_bar_with_text.dart';
 import 'package:itsukaji_flutter/models/group.dart';
+import 'package:itsukaji_flutter/presentation/components/member_list_section.dart';
 import 'package:itsukaji_flutter/presentation/providers/current_group_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -19,7 +20,41 @@ class GroupSettingsPage extends ConsumerWidget {
       ),
       body: currentGroup == null
           ? const Center(child: CircularProgressIndicator())
-          : _buildQRCodeSection(context, ref, currentGroup),
+          : _buildGroupSettingsSection(context, ref, currentGroup),
+    );
+  }
+
+  Widget _buildGroupSettingsSection(final BuildContext context, final WidgetRef ref, final Group currentGroup) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          MemberListSection(currentGroup),
+          const SizedBox(height: 40),
+          _buildInvitationButton(context, ref, currentGroup),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInvitationButton(final BuildContext context, final WidgetRef ref, final Group currentGroup) {
+    return SizedBox(
+      width: double.infinity,
+      height: 56,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              return _buildQRCodeSection(context, ref, currentGroup);
+            },
+          );
+        },
+        child: const Text('メンバーを招待する', style: TextStyle(fontWeight: FontWeight.w700)),
+      ),
     );
   }
 
