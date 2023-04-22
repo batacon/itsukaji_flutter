@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:itsukaji_flutter/common/custom_color.dart';
+import 'package:itsukaji_flutter/common/show_snack_bar_with_text.dart';
 import 'package:itsukaji_flutter/models/task.dart';
 import 'package:itsukaji_flutter/presentation/components/task_card_content.dart';
 import 'package:itsukaji_flutter/presentation/components/task_card_edge.dart';
@@ -26,11 +27,7 @@ class TaskCard extends ConsumerWidget {
         direction: DismissDirection.endToStart,
         onDismissed: (direction) {
           ref.read(taskListProvider.notifier).doneTask(task).then(
-                (_) => ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('${task.name}を完了しました!'),
-                  ),
-                ),
+                (_) => showSnackBarWithText(context, '${task.name}を完了しました!'),
               );
         },
         child: Card(

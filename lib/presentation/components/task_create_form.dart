@@ -178,12 +178,7 @@ class _TaskCreateFormState extends State<TaskCreateForm> {
         if (!_formKey.currentState!.validate()) return;
 
         try {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              duration: Duration(milliseconds: 1500),
-              content: Text('保存中...'),
-            ),
-          );
+          showSnackBarWithText(context, '保存中...');
           final form = {
             'name': _taskName,
             'intervalDays': _intervalDays,

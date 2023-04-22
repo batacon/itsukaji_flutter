@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:itsukaji_flutter/common/custom_color.dart';
 import 'package:itsukaji_flutter/common/date_format.dart';
+import 'package:itsukaji_flutter/common/show_snack_bar_with_text.dart';
 import 'package:itsukaji_flutter/models/task.dart';
 import 'package:itsukaji_flutter/repositories/tasks_repository.dart';
 
@@ -217,13 +218,8 @@ class _TaskEditFormState extends State<TaskEditForm> {
     return ElevatedButton(
       child: const Text('本当に消す'),
       onPressed: () {
-        _tasksRepository.removeTask(widget.task.id).then((final value) {
-          ScaffoldMessenger.of(dialogContext).showSnackBar(
-            SnackBar(
-              duration: const Duration(milliseconds: 1500),
-              content: Text('$_taskNameを削除中...'),
-            ),
-          );
+        _tasksRepository.removeTask(widget.task.id).then((_) {
+          showSnackBarWithText(context, '$_taskNameを削除中...');
         });
         Navigator.of(dialogContext).pop();
         Navigator.of(dialogContext).pop();
@@ -236,12 +232,7 @@ class _TaskEditFormState extends State<TaskEditForm> {
       icon: const Icon(Icons.check, color: CustomColor.primary, size: 32),
       onPressed: () {
         if (_formKey.currentState!.validate()) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              duration: Duration(milliseconds: 1500),
-              content: Text('保存中...'),
-            ),
-          );
+          showSnackBarWithText(context, '保存中...');
           final task = Task(
             id: widget.task.id,
             name: _taskName,
