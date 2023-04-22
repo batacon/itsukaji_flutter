@@ -20,8 +20,16 @@ class ActivityLogsProvider extends StateNotifier<List<ActivityLog>> {
     _init();
   }
 
-  Map<String, List<ActivityLog>> get activityLogsByDate {
+  bool get hasActivityLogs => state.isNotEmpty;
+
+  int get activityLogDateCount => _activityLogsByDate.length;
+
+  Map<String, List<ActivityLog>> get _activityLogsByDate {
     return groupBy(state, (activityLog) => activityLog.formattedDate);
+  }
+
+  Iterable<MapEntry<String, List<ActivityLog>>> get activityLogEntries {
+    return _activityLogsByDate.entries.sorted((a, b) => b.value[0].date.compareTo(a.value[0].date));
   }
 
   Future<void> addActivityLog(final Task task, final ActivityType type) async {
@@ -30,7 +38,6 @@ class ActivityLogsProvider extends StateNotifier<List<ActivityLog>> {
   }
 
   Future<void> _init() async {
-    final activityLogs = await _activityLogsRepository.getActivityLogs();
-    state = activityLogs.reversed.toList();
+    state = await _activityLogsRepository.getActivityLogs();
   }
 }

@@ -25,13 +25,13 @@ class ActivityLogPage extends ConsumerWidget {
   }
 
   Widget _buildActivityLogList(final WidgetRef ref) {
-    final activityLogsByDate = ref.watch(activityLogsProvider.notifier).activityLogsByDate;
-    if (activityLogsByDate.isEmpty) return const Center(child: Text('家事を記録しよう'));
+    final hasActivityLogs = ref.watch(activityLogsProvider.notifier).hasActivityLogs;
+    if (!hasActivityLogs) return const Center(child: Text('家事を記録しよう'));
 
-    final activityLogEntries = activityLogsByDate.entries;
+    final activityLogEntries = ref.watch(activityLogsProvider.notifier).activityLogEntries;
     return ListView.builder(
       shrinkWrap: true,
-      itemCount: activityLogsByDate.length,
+      itemCount: ref.watch(activityLogsProvider.notifier).activityLogDateCount,
       itemBuilder: (context, index) {
         final activityLogEntry = activityLogEntries.elementAt(index);
         return ActivityLogsByDateSection(activityLogEntry.key, activityLogEntry.value);
