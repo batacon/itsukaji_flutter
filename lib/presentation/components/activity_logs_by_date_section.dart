@@ -30,7 +30,9 @@ class ActivityLogsByDateSection extends StatelessWidget {
 
   Widget _buildActivityLogList(BuildContext context) {
     return Column(
-      children: _activityLogs.map((activityLog) => ActivityLogCard(activityLog)).toList(),
+      children: [
+        for (final activityLog in _activityLogs) ActivityLogCard(activityLog),
+      ],
     );
   }
 }

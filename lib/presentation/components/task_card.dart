@@ -33,9 +33,7 @@ class TaskCard extends ConsumerWidget {
         child: Card(
           elevation: 2,
           color: _cardColor(task),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(0),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

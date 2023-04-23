@@ -16,8 +16,19 @@ class Task with _$Task {
     required DateTime createdAt,
   }) = _Task;
 
-  factory Task.fromFirestore(final QueryDocumentSnapshot<Map<String, dynamic>> snapshot) {
+  factory Task.fromFirestoreStream(final QueryDocumentSnapshot<Map<String, dynamic>> snapshot) {
     final data = snapshot.data();
+    return Task(
+      id: snapshot.id,
+      name: data['name'],
+      intervalDays: data['intervalDays'],
+      lastDoneDate: data['lastDoneDate'].toDate(),
+      createdAt: data['createdAt'].toDate(),
+    );
+  }
+
+  factory Task.fromFirestore(final DocumentSnapshot<Map<String, dynamic>> snapshot) {
+    final data = snapshot.data()!;
     return Task(
       id: snapshot.id,
       name: data['name'],

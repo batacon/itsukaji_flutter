@@ -29,13 +29,11 @@ class ActivityLogPage extends ConsumerWidget {
     if (!hasActivityLogs) return const Center(child: Text('家事を記録しよう'));
 
     final activityLogEntries = ref.watch(activityLogsProvider.notifier).activityLogEntries;
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: ref.watch(activityLogsProvider.notifier).activityLogDateCount,
-      itemBuilder: (context, index) {
-        final activityLogEntry = activityLogEntries.elementAt(index);
-        return ActivityLogsByDateSection(activityLogEntry.key, activityLogEntry.value);
-      },
+    return Column(
+      children: [
+        for (final activityLogEntry in activityLogEntries)
+          ActivityLogsByDateSection(activityLogEntry.key, activityLogEntry.value),
+      ],
     );
   }
 }

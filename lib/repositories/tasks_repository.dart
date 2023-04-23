@@ -11,7 +11,13 @@ final tasksRepositoryProvider = Provider.autoDispose<TasksRepository>((ref) {
 class TasksRepository {
   Stream<List<Task>> getTasks(final Member currentMember) {
     final snapshot = db.collection('groups').doc(currentMember.groupId).collection("tasks").snapshots();
-    return snapshot.map((final snapshot) => snapshot.docs.map((final doc) => Task.fromFirestore(doc)).toList());
+    return snapshot.map((final snapshot) => snapshot.docs.map((final doc) => Task.fromFirestoreStream(doc)).toList());
+  }
+
+  Future<Task> findTaskById(final String id) async {
+    final currentMember = await MembersRepository().getCurrentMember();
+    final document = await db.collection('groups').doc(currentMember.groupId).collection("tasks").doc(id).get();
+    return Task.fromFirestore(document);
   }
 
   Future<void> addTask(final Map<String, dynamic> taskForm) async {
