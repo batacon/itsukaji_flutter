@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:itsukaji_flutter/presentation/components/nickname_form_field.dart';
 import 'package:itsukaji_flutter/presentation/pages/sign_in_page.dart';
 import 'package:itsukaji_flutter/repositories/groups_repository.dart';
 import 'package:itsukaji_flutter/repositories/members_repository.dart';
@@ -16,37 +17,42 @@ class SettingsPage extends ConsumerWidget {
         title: const Text('設定'),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: ListView(
-          children: [
-            const SizedBox(height: 20),
-            _buildSignOutButton(context),
-            const SizedBox(height: 540),
-            _buildDeleteAccountButton(context, ref),
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              const NicknameFormField(),
+              const SizedBox(height: 20),
+              _buildSignOutButton(context),
+              const SizedBox(height: 540),
+              _buildDeleteAccountButton(context, ref),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  ElevatedButton _buildSignOutButton(final BuildContext context) {
+  Widget _buildSignOutButton(final BuildContext context) {
     return ElevatedButton(
       onPressed: () async {
         _signOut(context);
       },
       style: ElevatedButton.styleFrom(
         minimumSize: const Size(double.infinity, 50),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
-      child: const Text('Sign Out'),
+      child: const Text('ログアウトする'),
     );
   }
 
-  ElevatedButton _buildDeleteAccountButton(final BuildContext context, final WidgetRef ref) {
+  Widget _buildDeleteAccountButton(final BuildContext context, final WidgetRef ref) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.red,
         minimumSize: const Size(double.infinity, 50),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
       onPressed: () async {
         showDialog(
@@ -74,7 +80,7 @@ class SettingsPage extends ConsumerWidget {
           },
         );
       },
-      child: const Text('Delete Account'),
+      child: const Text('アカウントを削除する', style: TextStyle(fontWeight: FontWeight.w700)),
     );
   }
 

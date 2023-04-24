@@ -28,6 +28,10 @@ class MembersRepository {
     return document.docs.map((final doc) => Member.fromFirestore(doc)).toList();
   }
 
+  Future<void> updateNickname(final String nickname) async {
+    await db.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({'name': nickname});
+  }
+
   Future<void> createMember(final User firebaseUser, final String groupId) async {
     await db.collection("users").doc(firebaseUser.uid).set({
       "name": firebaseUser.displayName,
