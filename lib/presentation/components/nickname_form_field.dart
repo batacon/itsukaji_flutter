@@ -38,37 +38,45 @@ class _NicknameFormFieldState extends ConsumerState<NicknameFormField> {
         children: [
           const Text('ニックネームを変更する', style: TextStyle(fontWeight: FontWeight.w700)),
           const SizedBox(height: 8),
-          TextFormField(
-            controller: _nicknameController,
-            decoration: const InputDecoration(
-              labelText: 'ニックネーム',
-              labelStyle: TextStyle(color: CustomColor.text),
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'ニックネームを入力してください';
-              }
-              if (value.length > 20) {
-                return '20文字以内で入力してください';
-              }
-              return null;
-            },
-            onFieldSubmitted: (_) => _updateNickname(),
-          ),
+          _buildNicknameFormField(),
           const SizedBox(height: 32),
-          SizedBox(
-            width: double.infinity,
-            height: 56,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-              ),
-              onPressed: () => _updateNickname(),
-              child: const Text('変更する'),
-            ),
-          ),
+          _buildSubmitButton(),
           const SizedBox(height: 80),
         ],
+      ),
+    );
+  }
+
+  Widget _buildNicknameFormField() {
+    return TextFormField(
+      controller: _nicknameController,
+      decoration: const InputDecoration(
+        labelText: 'ニックネーム',
+        labelStyle: TextStyle(color: CustomColor.text),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'ニックネームを入力してください';
+        }
+        if (value.length > 20) {
+          return '20文字以内で入力してください';
+        }
+        return null;
+      },
+      onFieldSubmitted: (_) => _updateNickname(),
+    );
+  }
+
+  Widget _buildSubmitButton() {
+    return SizedBox(
+      width: double.infinity,
+      height: 56,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
+        onPressed: () => _updateNickname(),
+        child: const Text('変更する'),
       ),
     );
   }
