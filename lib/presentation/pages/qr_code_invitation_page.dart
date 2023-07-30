@@ -24,7 +24,7 @@ class QRCodeInvitationPage extends ConsumerWidget {
                   const Text('招待を受けた人が下記のQRコードを'),
                   const Text('スキャンするとグループに参加できます。'),
                   const SizedBox(height: 32),
-                  QrImage(
+                  QrImageView(
                     data: currentGroup.invitationCode,
                     version: QrVersions.auto,
                     size: 200.0,
